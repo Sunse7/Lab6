@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.Concurrent;
 
 namespace Lab6
 {
@@ -20,6 +21,10 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static int numOfGlasses = 8;
+        public static int numOfChairs = 9;
+        public BlockingCollection<int> shelf = new BlockingCollection<int>(numOfGlasses);
+        public BlockingCollection<int> table = new BlockingCollection<int>(numOfChairs);
         public MainWindow()
         {
             InitializeComponent();
