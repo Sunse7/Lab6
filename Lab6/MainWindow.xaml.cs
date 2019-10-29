@@ -33,6 +33,8 @@ namespace Lab6
             Dispatcher.Invoke(() =>
             {
                 bartenderListBox.Items.Insert(0, message);
+                waitressListBox.Items.Insert(0, message);
+                patronListbox.Items.Insert(0, message);
             });
         }
     }
