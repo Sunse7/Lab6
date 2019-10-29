@@ -17,7 +17,7 @@ namespace Lab6
         public ConcurrentQueue<Patron> guest = new ConcurrentQueue<Patron>();
         public Bar()
         {
-
+            
         }
     }
 }
