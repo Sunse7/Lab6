@@ -8,6 +8,9 @@ namespace Lab6
 {
     class BeerGlass
     {
-
+        public BeerGlass()
+        {
+            
+        }
     }
 }

@@ -21,13 +21,19 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static int numOfGlasses = 8;
-        public static int numOfChairs = 9;
-        public BlockingCollection<int> shelf = new BlockingCollection<int>(numOfGlasses);
-        public BlockingCollection<int> table = new BlockingCollection<int>(numOfChairs);
         public MainWindow()
         {
             InitializeComponent();
+            
+               
+        }
+
+        public void ListBoxMessage(string message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                bartenderListBox.Items.Insert(0, message);
+            });
         }
     }
 }

@@ -55,7 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BarChair.cs" />
+    <Compile Include="Bar.cs" />
+    <Compile Include="Chair.cs" />
     <Compile Include="Bartender.cs" />
     <Compile Include="BeerGlass.cs" />
     <Compile Include="TimeStamp.cs" />
