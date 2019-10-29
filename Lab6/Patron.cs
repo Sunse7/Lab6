@@ -15,12 +15,16 @@ namespace Lab6
         Bar bar = new Bar();
         BeerGlass glass = new BeerGlass();
         Chair barChair = new Chair();
+        string[] patronNames = {"Nils", "Simon", "Alex", "Wille", "Sofia", "Charlotte",
+        "Johan", "Jonas", "Emil", "Elvis", "Daniel", "Andrea", "Andreas", "Anders", "Karo", "Khosro", "Luna",
+        "Nicklas", "Petter", "Robin", "Tijana", "Tommy", "Pontus", "John", "Andreé" };
         
         public Patron()
         {
+            
             Random random = new Random();
             int randInt = random.Next(10000, 20001);
-
+            names.AddRange(patronNames);
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
@@ -34,9 +38,8 @@ namespace Lab6
                 bar.chair.Add(barChair);
             });
         }
-        /*names.Add("Nils", "Simon", "Alex", "Wille", "Sofia", "Charlotte",
-        "Johan", "Jonas", "Emil", "Elvis", "Daniel", "Andrea", "Andreas", "Anders", "Karo", "Khosro", "Luna",
-        "Nicklas", "Petter", "Robin", "Tijana", "Tommy", "Pontus", "John", "Andreé");*/
+        
+        
        
     }
 }
