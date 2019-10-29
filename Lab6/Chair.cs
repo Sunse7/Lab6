@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lab6
 {
-    class BarChair
+    class Chair
     {
+        public Chair()
+        {
+
+        }
     }
 }

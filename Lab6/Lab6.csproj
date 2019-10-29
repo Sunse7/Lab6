@@ -56,7 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bar.cs" />
-    <Compile Include="BarChair.cs" />
+    <Compile Include="Chair.cs" />
     <Compile Include="Bartender.cs" />
     <Compile Include="BeerGlass.cs" />
     <Compile Include="TimeStamp.cs" />
