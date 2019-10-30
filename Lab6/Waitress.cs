@@ -10,16 +10,17 @@ namespace Lab6
     class Waitress
     {
         BeerGlass glass = new BeerGlass();
+        MainWindow mainWindow = new MainWindow();
         public Waitress(Bar bar)
         {
             Task.Run(() => 
             {
-                //Log - Pick glass from table
-                bar.table.Take();
+                mainWindow.WaitressListBoxMessage("Picking up glass from table"); 
+                bar.table.Take(); //Taking a glass from table
                 Thread.Sleep(10000);
-                //Log - Washing
+                mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");
                 Thread.Sleep(15000); //Loop?
-                bar.shelf.Add(glass);
+                bar.shelf.Add(glass); //Adding a glass to shelf
             });
         }
     }

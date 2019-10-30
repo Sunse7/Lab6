@@ -25,16 +25,26 @@ namespace Lab6
         {
             InitializeComponent();
             
-               
         }
-
-        public void ListBoxMessage(string message)
+        public void BartenderListBoxMessage(string message)
         {
             Dispatcher.Invoke(() =>
             {
                 bartenderListBox.Items.Insert(0, message);
+            });
+        }        
+        public void WaitressListBoxMessage(string message)
+        {
+            Dispatcher.Invoke(() => 
+            {
                 waitressListBox.Items.Insert(0, message);
-                patronListbox.Items.Insert(0, message);
+            });
+        }
+        public void PatronListBoxMessage(string message)
+        {
+            Dispatcher.Invoke(() => 
+            {
+                patronListBox.Items.Insert(0, message);
             });
         }
     }

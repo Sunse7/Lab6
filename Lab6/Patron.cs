@@ -15,27 +15,40 @@ namespace Lab6
         Bar bar = new Bar();
         BeerGlass glass = new BeerGlass();
         Chair barChair = new Chair();
+        MainWindow mainWindow = new MainWindow();
+
         string[] patronNames = {"Nils", "Simon", "Alex", "Wille", "Sofia", "Charlotte",
         "Johan", "Jonas", "Emil", "Elvis", "Daniel", "Andrea", "Andreas", "Anders", "Karo", "Khosro", "Luna",
         "Nicklas", "Petter", "Robin", "Tijana", "Tommy", "Pontus", "John", "Andreé" };
         
         public Patron()
-        {
-            
-            Random random = new Random();
-            int randInt = random.Next(10000, 20001);
+        {            
             names.AddRange(patronNames);
+            Random random = new Random();
+            int randInt = random.Next(20000, 30001);
+            
+
             Task.Run(() =>
             {
                 Thread.Sleep(1000);
-                //Log walk to bar
+                mainWindow.PatronListBoxMessage($"{names} walks to the bar");
                 //Get a beer
-                Thread.Sleep(4000);
-                bar.chair.Take();
-                //Drink beer
-                Thread.Sleep(randInt);
+                mainWindow.PatronListBoxMessage($"{names} looks for an empty chair");
+                if (bar.chair == null)
+                {
+                    bar.chair.TryTake(out barChair);
+                    Thread.Sleep(4000);
+                }
+                else
+                {
+                    //Wait and try again
+                }
+                mainWindow.PatronListBoxMessage($"{names} sits down and drinks its beer");
+                Thread.Sleep(randInt); //Drink beer
+
                 bar.table.Add(glass);
                 bar.chair.Add(barChair);
+                mainWindow.PatronListBoxMessage("Leaves bar when done");
             });
         }
         

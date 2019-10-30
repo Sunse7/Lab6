@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 namespace Lab6
 {
     class Bar
-    {
+    {        
         private static int numOfGlasses = 8;
         private static int numOfChairs = 9;
         public BlockingCollection<BeerGlass> shelf = new BlockingCollection<BeerGlass>(numOfGlasses);
