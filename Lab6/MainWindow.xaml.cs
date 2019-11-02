@@ -49,5 +49,24 @@ namespace Lab6
                 patronListBox.Items.Insert(0, message);
             });
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Countdown(120, TimeSpan.FromSeconds(1), cur => CountdownTextBox.Text = cur.ToString());
+        }
+        void Countdown(int count, TimeSpan interval, Action<int> ts)
+        {
+            var dt = new System.Windows.Threading.DispatcherTimer();
+            dt.Interval = interval;
+            dt.Tick += (_, a) =>
+            {
+                if (count-- == 0)
+                    dt.Stop();
+                else
+                    ts(count);
+            };
+            ts(count);
+            dt.Start();
+        }
     }
 }
