@@ -10,8 +10,7 @@ namespace Lab6
 {
     class Bouncer
     {
-        Patron patron = new Patron();
-        MainWindow mainWindow = new MainWindow();
+
         public Bouncer(Bar bar)
         {
             Random random = new Random();
@@ -19,9 +18,12 @@ namespace Lab6
 
             Task.Run(() => 
             {
-                Thread.Sleep(randInt);
-                bar.guest.Enqueue(new Patron());
-                mainWindow.PatronListBoxMessage("Bouncer goes home"); //When bar closes
+                while (bar.IsOpen)
+                {
+                    Thread.Sleep(randInt);
+                    bar.guest.Enqueue(new Patron(bar));
+                }
+                bar.mainWindow.PatronListBoxMessage("Bouncer goes home"); //When bar closes
             });
         }
         

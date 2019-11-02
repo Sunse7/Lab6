@@ -10,49 +10,57 @@ namespace Lab6
     class Patron
     {
         public string Name { get; set; }
-        List<Patron> patrons = new List<Patron>();
         List<string> names = new List<string>();
-        Bar bar = new Bar();
-        BeerGlass glass = new BeerGlass();
-        Chair barChair = new Chair();
-        MainWindow mainWindow = new MainWindow();
+        BeerGlass glass;
+        Chair barChair;
+        Bar bar;
 
         string[] patronNames = {"Nils", "Simon", "Alex", "Wille", "Sofia", "Charlotte",
         "Johan", "Jonas", "Emil", "Elvis", "Daniel", "Andrea", "Andreas", "Anders", "Karo", "Khosro", "Luna",
         "Nicklas", "Petter", "Robin", "Tijana", "Tommy", "Pontus", "John", "Andreé" };
         
-        public Patron()
-        {            
+        public Patron(Bar bar)
+        {
+            this.bar = bar;
+
+            bar.patronList.Add(this);
             names.AddRange(patronNames);
             Random random = new Random();
-            int randInt = random.Next(20000, 30001);
-            
+            int randomName = random.Next(0, names.Count);
+            int randomNum = random.Next(20000, 30001);
+            Name = names[randomName];           
 
             Task.Run(() =>
             {
-                Thread.Sleep(1000);
-                mainWindow.PatronListBoxMessage($"{names} walks to the bar");
-                //Get a beer
-                mainWindow.PatronListBoxMessage($"{names} looks for an empty chair");
-                if (bar.chair == null)
-                {
-                    bar.chair.TryTake(out barChair);
-                    Thread.Sleep(4000);
-                }
-                else
-                {
-                    //Wait and try again
-                }
-                mainWindow.PatronListBoxMessage($"{names} sits down and drinks its beer");
-                Thread.Sleep(randInt); //Drink beer
+                bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
+                Thread.Sleep(1000); //Walk to bar
+                bar.mainWindow.PatronListBoxMessage($"{Name} walks to the bar");
+                //Get a beer from bartender
+                bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
+                LookForEmptyChair();
+                Thread.Sleep(bar.TimeToFindChair);
+                bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
+                Thread.Sleep(randomNum); //Drink beer
 
-                bar.table.Add(glass);
-                bar.chair.Add(barChair);
-                mainWindow.PatronListBoxMessage("Leaves bar when done");
+                    //bar.table.Push(glass);
+                    //bar.chair.Push(barChair);
+                bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
+                bar.patronList.Remove(this);
+                    // bar.IsOpen = false;               
+
             });
         }
-        
-        
-       
+        private void LookForEmptyChair()
+        {
+            while (bar.chair.Count == 0)
+            {
+                Thread.Sleep(500);
+            }
+            if (bar.chair.Count != 0)
+            {
+                bar.chair.TryPop(out barChair);
+            }
+            
+        }       
     }
 }

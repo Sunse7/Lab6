@@ -21,9 +21,11 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
+            Bar bar = new Bar(this);
             
         }
         public void BartenderListBoxMessage(string message)
