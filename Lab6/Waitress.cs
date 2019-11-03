@@ -9,7 +9,7 @@ namespace Lab6
 {
     class Waitress
     {
-        BeerGlass glass = new BeerGlass();
+        BeerGlass glass;
         Bar bar;
         public Waitress(Bar bar)
         {
@@ -20,11 +20,9 @@ namespace Lab6
                 while (bar.IsOpen)
                 {
                     WaitToPickGlasses(); //Check for dirty glasses
-                    bar.mainWindow.WaitressListBoxMessage("Picking up glass from table"); 
-                    Thread.Sleep(10000);
+                    bar.mainWindow.WaitressListBoxMessage("Picking up glass from table");                    
                     DoDishes();
-                    bar.mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");
-                    Thread.Sleep(15000);
+                    bar.mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");                    
                 }                
             });
         }
@@ -33,7 +31,7 @@ namespace Lab6
         {
             while (bar.table.Count == 0)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(50);
             }
 
             if (bar.table.Count != 0)
@@ -42,6 +40,7 @@ namespace Lab6
                 {
                     bar.table.TryPop(out glass);
                 }
+                Thread.Sleep(bar.TimeToPickGlasses);
             }
         }
 
@@ -51,6 +50,7 @@ namespace Lab6
             {
                 bar.shelf.Push(glass);
             }
+            Thread.Sleep(bar.TimeToDoDishes);
         }
     }
 }

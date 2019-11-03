@@ -32,7 +32,7 @@ namespace Lab6
         {
             Dispatcher.Invoke(() =>
             {
-                bartenderListBox.Items.Insert(0, message);
+                bartenderListBox.Items.Insert(0, message);             
             });
         }        
         public void WaitressListBoxMessage(string message)
@@ -52,7 +52,8 @@ namespace Lab6
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Countdown(120, TimeSpan.FromSeconds(1), cur => CountdownTextBox.Text = cur.ToString());
+            Countdown(120, TimeSpan.FromSeconds(1), cur => countdownTextBox.Text = cur.ToString());
+            
         }
         void Countdown(int count, TimeSpan interval, Action<int> ts)
         {

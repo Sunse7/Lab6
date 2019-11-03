@@ -7,16 +7,16 @@
         mc:Ignorable="d"
         Title="Puzzle" Height="450" Width="800">
     <Grid>
-        <Label Content="Bartender" HorizontalAlignment="Left" Margin="71,119,0,0" VerticalAlignment="Top" Width="67"/>
-        <Label Content="Waitress" HorizontalAlignment="Left" Margin="231,119,0,0" VerticalAlignment="Top" Width="71"/>
-        <Label Content="Guests" HorizontalAlignment="Left" Margin="391,119,0,0" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.025,0.669"/>
-        <ListBox x:Name="bartenderListBox" HorizontalAlignment="Left" Height="100" Margin="71,167,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="waitressListBox" HorizontalAlignment="Left" Height="100" Margin="231,167,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="patronListBox" HorizontalAlignment="Left" Height="100" Margin="391,167,0,0" VerticalAlignment="Top" Width="100"/>
-        <Label Content="Info" HorizontalAlignment="Left" Margin="583,167,0,0" VerticalAlignment="Top" Height="100" Width="111"/>
-        <Label Content="The bar closes in:" HorizontalAlignment="Left" Margin="275,28,0,0" VerticalAlignment="Top" Width="102"/>
-        <TextBox x:Name="CountdownTextBox" Margin="377,28,332,365" />
-        <Button Content="Open bar" Click="Button_Click" Width="150" Margin="294,74,348,321" />
+        <Label Content="Bartender" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="67"/>
+        <Label Content="Waitress" HorizontalAlignment="Left" Margin="10,185,0,0" VerticalAlignment="Top" Width="71"/>
+        <Label Content="Guests" HorizontalAlignment="Left" Margin="10,311,0,0" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.025,0.669"/>
+        <ListBox x:Name="bartenderListBox" HorizontalAlignment="Left" Height="100" Margin="101,67,0,0" VerticalAlignment="Top" Width="247"/>
+        <ListBox x:Name="waitressListBox" HorizontalAlignment="Left" Height="100" Margin="101,185,0,0" VerticalAlignment="Top" Width="247"/>
+        <ListBox x:Name="patronListBox" HorizontalAlignment="Left" Height="100" Margin="102,311,0,0" VerticalAlignment="Top" Width="246"/>
+        <Label Content="Info" HorizontalAlignment="Left" Margin="525,90,0,0" VerticalAlignment="Top" Height="224" Width="169"/>
+        <Label Content="The bar closes in:" HorizontalAlignment="Left" Margin="448,26,0,0" VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="countdownTextBox" Margin="555,26,153.333,366.667" />
+        <Button Content="Open bar" Click="Button_Click" Width="150" Margin="400,372,243.333,22.667" />
 
     </Grid>
 </Window>

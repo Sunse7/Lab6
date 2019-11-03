@@ -13,14 +13,11 @@ namespace Lab6
 
         public Bouncer(Bar bar)
         {
-            Random random = new Random();
-            int randInt = random.Next(3000, 10001);
-
             Task.Run(() => 
             {
                 while (bar.IsOpen)
                 {
-                    Thread.Sleep(randInt);
+                    Thread.Sleep(bar.TimeToCheckID);
                     bar.guest.Enqueue(new Patron(bar));
                 }
                 bar.mainWindow.PatronListBoxMessage("Bouncer goes home"); //When bar closes

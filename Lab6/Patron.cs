@@ -12,7 +12,7 @@ namespace Lab6
         public string Name { get; set; }
         List<string> names = new List<string>();
         BeerGlass glass;
-        Chair barChair;
+        Chair chair;
         Bar bar;
 
         string[] patronNames = {"Nils", "Simon", "Alex", "Wille", "Sofia", "Charlotte",
@@ -22,43 +22,41 @@ namespace Lab6
         public Patron(Bar bar)
         {
             this.bar = bar;
-
+            
             bar.patronList.Add(this);
             names.AddRange(patronNames);
-            Random random = new Random();
-            int randomName = random.Next(0, names.Count);
-            int randomNum = random.Next(20000, 30001);
+            int randomName = Bar.random.Next(0, names.Count);            
             Name = names[randomName];           
 
             Task.Run(() =>
             {
-                bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
-                Thread.Sleep(1000); //Walk to bar
-                bar.mainWindow.PatronListBoxMessage($"{Name} walks to the bar");
-                //Get a beer from bartender
-                bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
-                LookForEmptyChair();
-                Thread.Sleep(bar.TimeToFindChair);
-                bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
-                Thread.Sleep(randomNum); //Drink beer
+                while (bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
+                {
+                    bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
+                    Thread.Sleep(1000); //Walk to bar
+                    bar.mainWindow.PatronListBoxMessage($"{Name} walks to the bar");
+                    LookForEmptyChair();
+                    Thread.Sleep(bar.TimeToDrinkBeer); //Drink beer
 
-                    //bar.table.Push(glass);
-                    //bar.chair.Push(barChair);
-                bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
-                bar.patronList.Remove(this);
-                    // bar.IsOpen = false;               
-
+                    bar.table.Push(glass);
+                    bar.chair.Push(chair);
+                    bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
+                    bar.patronList.Remove(this);
+                }
             });
         }
         private void LookForEmptyChair()
-        {
+        {            
             while (bar.chair.Count == 0)
             {
                 Thread.Sleep(500);
             }
-            if (bar.chair.Count != 0)
+            if (bar.chair.Count > 0 && bar.GotBeer)
             {
-                bar.chair.TryPop(out barChair);
+                bar.chair.TryPop(out chair);
+                bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
+                Thread.Sleep(bar.TimeToFindChair);
+                bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
             }
             
         }       
