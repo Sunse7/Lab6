@@ -52,22 +52,41 @@ namespace Lab6
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Countdown(120, TimeSpan.FromSeconds(1), cur => countdownTextBox.Text = cur.ToString());
+            if(Bar.IsOpen == false)
+            {
+                Bar.IsOpen = true;
+                Countdown(120, TimeSpan.FromSeconds(1), cur => countdownTextBox.Text = cur.ToString());
+                
+            }
+            else
+            {
+                Bar.IsOpen = false;
+            }
             
         }
         void Countdown(int count, TimeSpan interval, Action<int> ts)
         {
-            var dt = new System.Windows.Threading.DispatcherTimer();
-            dt.Interval = interval;
-            dt.Tick += (_, a) =>
+            if(Bar.IsOpen == true)
             {
-                if (count-- == 0)
+                var dt = new System.Windows.Threading.DispatcherTimer();
+                dt.Interval = interval;
+                dt.Tick += (_, a) =>
+                {
+                 if (count-- == 0)
+                 {
                     dt.Stop();
-                else
+                    Bar.IsOpen = false;
+                 }
+                 else
+                 {
                     ts(count);
-            };
-            ts(count);
-            dt.Start();
+                 }
+                    
+                };
+                ts(count);
+                dt.Start();
+            }
+            
         }
     }
 }

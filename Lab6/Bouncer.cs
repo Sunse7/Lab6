@@ -15,7 +15,7 @@ namespace Lab6
         {
             Task.Run(() => 
             {
-                while (bar.IsOpen)
+                while (Bar.IsOpen == true)
                 {
                     Thread.Sleep(bar.TimeToCheckID);
                     bar.guest.Enqueue(new Patron(bar));

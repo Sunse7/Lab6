@@ -18,7 +18,7 @@ namespace Lab6
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
         public List<Patron> patronList;
-        public bool IsOpen = true;
+        public static bool IsOpen { get; set; }
         public bool GotBeer = false;
         public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToDrinkBeer = random.Next(20000, 30001);

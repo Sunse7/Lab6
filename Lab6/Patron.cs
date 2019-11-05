@@ -30,7 +30,7 @@ namespace Lab6
 
             Task.Run(() =>
             {
-                while (bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
+                while (Bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
                 {
                     bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
                     Thread.Sleep(1000); //Walk to bar

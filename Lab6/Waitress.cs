@@ -17,7 +17,7 @@ namespace Lab6
 
             Task.Run(() => 
             {
-                while (bar.IsOpen)
+                while (Bar.IsOpen)
                 {
                     WaitToPickGlasses(); //Check for dirty glasses
                     bar.mainWindow.WaitressListBoxMessage("Picking up glass from table");                    
