@@ -9,23 +9,56 @@ namespace Lab6
 {
     class Bartender
     {
-        MainWindow mainWindow = new MainWindow();
-        
+        BeerGlass glass;
+        Bar bar;
+        Patron patron;
         public Bartender(Bar bar)
         {
-            
-            
+            this.bar = bar;
+
             Task.Run(() =>
             {
-                mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
-                //When guest arraive
-                mainWindow.BartenderListBoxMessage("Walking to shelf"); 
-                Thread.Sleep(3000);
-                bar.shelf.Take(); //Taking a glass
-                Thread.Sleep(3000);
-                mainWindow.BartenderListBoxMessage("Pouring beer");
-                //Gives beer to patron
+                while (true) //Bartender goes home when the last guest leaves
+                {
+                    //Loop for every new guest?
+                    
+                    bar.mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
+                    LookingForGuest();                   
+                    WhenGuestOrders();
+                    
+                    /*if(bar.guest.?)
+                    {   
+                        //Last guest leaves not IsEmpty
+                        bar.mainWindow.BartenderListBoxMessage("Batrender goes home");
+                    }*/
+                }
             });
+        }
+        private void LookingForGuest()
+        {            
+            while(bar.guest.Count == 0)
+            {
+                Thread.Sleep(50);
+            }
+            if (bar.guest.TryPeek(out patron))
+            {
+                bar.mainWindow.BartenderListBoxMessage("Walking to shelf");
+                Thread.Sleep(bar.TimeToGetGlass);
+            }         
+        }
+        private void WhenGuestOrders() //WhenGuestArrives?
+        {
+            while(bar.shelf.Count == 0)
+            {
+                Thread.Sleep(50);
+            }
+            if(bar.shelf.Count != 0)
+            {
+                bar.shelf.TryPop(out glass);
+                Thread.Sleep(bar.TimeToPourBeer);
+                bar.mainWindow.BartenderListBoxMessage($"Gives beer to guest");
+                bar.GotBeer = true;
+            }
         }
     }
 }

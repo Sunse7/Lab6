@@ -9,19 +9,48 @@ namespace Lab6
 {
     class Waitress
     {
-        BeerGlass glass = new BeerGlass();
-        MainWindow mainWindow = new MainWindow();
+        BeerGlass glass;
+        Bar bar;
         public Waitress(Bar bar)
         {
+            this.bar = bar;
+
             Task.Run(() => 
             {
-                mainWindow.WaitressListBoxMessage("Picking up glass from table"); 
-                bar.table.Take(); //Taking a glass from table
-                Thread.Sleep(10000);
-                mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");
-                Thread.Sleep(15000); //Loop?
-                bar.shelf.Add(glass); //Adding a glass to shelf
+                while (bar.IsOpen)
+                {
+                    WaitToPickGlasses(); //Check for dirty glasses
+                    bar.mainWindow.WaitressListBoxMessage("Picking up glass from table");                    
+                    DoDishes();
+                    bar.mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");                    
+                }                
             });
+        }
+
+        private void WaitToPickGlasses()
+        {
+            while (bar.table.Count == 0)
+            {
+                Thread.Sleep(50);
+            }
+
+            if (bar.table.Count != 0)
+            {
+                foreach (var item in bar.table)
+                {
+                    bar.table.TryPop(out glass);
+                }
+                Thread.Sleep(bar.TimeToPickGlasses);
+            }
+        }
+
+        private void DoDishes()
+        {
+            foreach (var item in bar.table)
+            {
+                bar.shelf.Push(glass);
+            }
+            Thread.Sleep(bar.TimeToDoDishes);
         }
     }
 }
