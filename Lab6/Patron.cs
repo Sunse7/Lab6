@@ -42,6 +42,7 @@ namespace Lab6
                     bar.chair.Push(chair);
                     bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
                     bar.patronList.Remove(this);
+
                 }
             });
         }
@@ -49,16 +50,16 @@ namespace Lab6
         {            
             while (bar.chair.Count == 0)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(50);
             }
             if (bar.chair.Count > 0 && bar.GotBeer)
             {
-                bar.chair.TryPop(out chair);
+                bar.GotBeer = false; //First guest does not LookForEmptyChair(); bool needs to be somewhere else
                 bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
                 Thread.Sleep(bar.TimeToFindChair);
+                bar.chair.TryPop(out chair);
                 bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
-            }
-            
+            }            
         }       
     }
 }

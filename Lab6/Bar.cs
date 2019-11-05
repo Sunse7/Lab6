@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 namespace Lab6
 {
-    class Bar
+    class Bar //Label content: Num of guests, time to bar closes, num of glasses/shelf, num of chairs in Chair
     {
         private static int MaxNumOfGlasses = 8;
         private static int MaxNumOfChairs = 9;
@@ -20,15 +20,15 @@ namespace Lab6
         public List<Patron> patronList;
         public bool IsOpen = true;
         public bool GotBeer = false;
-        public int TimeToFindChair = 4000;
+        public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
+        public int TimeToFindChair = 4000;
         public int TimeToGetGlass = 3000;
         public int TimeToPourBeer = 3000;
-        public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToPickGlasses = 10000;
         public int TimeToDoDishes = 15000;
         public Bar(MainWindow mainWindow)
-        {
+        {            
             this.mainWindow = mainWindow;
             shelf = new ConcurrentStack<BeerGlass>();
             table = new ConcurrentStack<BeerGlass>();
@@ -37,8 +37,8 @@ namespace Lab6
             patronList = new List<Patron>();
             var bouncer = new Bouncer(this);
             var waitress = new Waitress(this);
-            var bartender = new Bartender(this);        
-           
+            var bartender = new Bartender(this);
+            
             for (int i = 0; i < MaxNumOfGlasses; i++)
             {
                 shelf.Push(new BeerGlass());
@@ -47,6 +47,11 @@ namespace Lab6
             {
                 chair.Push(new Chair());
             }            
+        }
+        public void BarInfo()
+        {
+
+            mainWindow.barInfoLable.Content = "";
         }
     }
 }

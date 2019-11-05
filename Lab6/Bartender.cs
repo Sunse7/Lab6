@@ -25,7 +25,7 @@ namespace Lab6
                     bar.mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
                     LookingForGuest();                   
                     WhenGuestOrders();
-                    bar.GotBeer = false;
+                    
                     /*if(bar.guest.?)
                     {   
                         //Last guest leaves not IsEmpty
