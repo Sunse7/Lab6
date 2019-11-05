@@ -9,7 +9,7 @@ namespace Lab6
 {
     class Bartender
     {
-        
+        MainWindow mainWindow = new MainWindow();
         
         public Bartender(Bar bar)
         {
@@ -17,12 +17,14 @@ namespace Lab6
             
             Task.Run(() =>
             {
-                //Log to listbox - Walking to shelf
-                
+                mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
+                //When guest arraive
+                mainWindow.BartenderListBoxMessage("Walking to shelf"); 
                 Thread.Sleep(3000);
-                bar.shelf.Take();
+                bar.shelf.Take(); //Taking a glass
                 Thread.Sleep(3000);
-                //Log to Listbox - Pouring beer
+                mainWindow.BartenderListBoxMessage("Pouring beer");
+                //Gives beer to patron
             });
         }
     }

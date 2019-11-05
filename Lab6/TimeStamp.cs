@@ -8,5 +8,9 @@ namespace Lab6
 {
     class TimeStamp
     {
+        public TimeStamp()
+        {
+
+        }
     }
 }
