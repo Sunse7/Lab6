@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Lab6
 {
@@ -22,13 +23,17 @@ namespace Lab6
         public bool GotBeer = false;
         public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
+        public int TimeToWalkToBar = 1000;
         public int TimeToFindChair = 4000;
         public int TimeToGetGlass = 3000;
         public int TimeToPourBeer = 3000;
         public int TimeToPickGlasses = 10000;
         public int TimeToDoDishes = 15000;
+        // public static int NumOfGuestsInBar;
+        
+
         public Bar(MainWindow mainWindow)
-        {            
+        {
             this.mainWindow = mainWindow;
             shelf = new ConcurrentStack<BeerGlass>();
             table = new ConcurrentStack<BeerGlass>();
@@ -46,12 +51,25 @@ namespace Lab6
             for (int i = 0; i < MaxNumOfChairs; i++)
             {
                 chair.Push(new Chair());
-            }            
+            }
+
+            BarInfo();
         }
         public void BarInfo()
         {
-
-            mainWindow.barInfoLable.Content = "";
+            Task.Run(() => {
+                while (true)
+                {
+                    Thread.Sleep(50);                    
+                    mainWindow.Dispatcher.Invoke(() =>
+                    {
+                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {guest.Count}";
+                        //mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {Patron.NumOfGuestsInBar}";
+                        mainWindow.numOfGlassesInShelfLable.Content = $"Number of glasses in shelf: {shelf.Count} (Max: {MaxNumOfGlasses})";
+                        mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
+                    });
+                }
+            }); 
         }
     }
 }
