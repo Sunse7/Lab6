@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -21,73 +23,40 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        public enum LogBox { Event, Bartender, Waitress, Patron }
+        Bar bar;
         public MainWindow()
         {
             InitializeComponent();
-            Bar bar = new Bar(this);
-            
-            
-        }
-        public void BartenderListBoxMessage(string message)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                bartenderListBox.Items.Insert(0, message);             
-            });
-        }        
-        public void WaitressListBoxMessage(string message)
-        {
-            Dispatcher.Invoke(() => 
-            {
-                waitressListBox.Items.Insert(0, message);
-            });
-        }
-        public void PatronListBoxMessage(string message)
-        {
-            Dispatcher.Invoke(() => 
-            {
-                patronListBox.Items.Insert(0, message);
-            });
+            bar = new Bar(this);
+            OpenBarButton.Click += Open_Bar_Click;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void Open_Bar_Click(object sender, RoutedEventArgs e)
         {
-            if(Bar.IsOpen == false)
+            if (!Bar.IsOpen)
             {
-                Bar.IsOpen = true;
-                Countdown(120, TimeSpan.FromSeconds(1), cur => countdownTextBox.Text = cur.ToString());
-                
+                bar.OpenBar();
+                OpenBarButton.Click += Open_Bar_Click;
             }
-            else
-            {
-                Bar.IsOpen = false;
-            }
-            
         }
-        void Countdown(int count, TimeSpan interval, Action<int> ts)
+
+        public void LogEvent(string text, LogBox textblock)
         {
-            if(Bar.IsOpen == true)
+            switch (textblock)
             {
-                var dt = new System.Windows.Threading.DispatcherTimer();
-                dt.Interval = interval;
-                dt.Tick += (_, a) =>
-                {
-                 if (count-- == 0)
-                 {
-                    dt.Stop();
-                    Bar.IsOpen = false;
-                 }
-                 else
-                 {
-                    ts(count);
-                 }
-                    
-                };
-                ts(count);
-                dt.Start();
+                case LogBox.Bartender:
+                    this.Dispatcher.Invoke(() => bartenderListBox.Items.Insert(0, text));
+                    break;
+                case LogBox.Patron:
+                    this.Dispatcher.Invoke(() => patronListBox.Items.Insert(0, text));
+                    break;
+                case LogBox.Waitress:
+                    this.Dispatcher.Invoke(() => waitressListBox.Items.Insert(0, text));
+                    break;
             }
-            
         }
+
     }
 }

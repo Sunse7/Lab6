@@ -40,9 +40,7 @@ namespace Lab6
             chair = new ConcurrentStack<Chair>();
             guest = new ConcurrentQueue<Patron>();
             patronList = new List<Patron>();
-            var bouncer = new Bouncer(this);
-            var waitress = new Waitress(this);
-            var bartender = new Bartender(this);
+            
             
             for (int i = 0; i < MaxNumOfGlasses; i++)
             {
@@ -53,6 +51,16 @@ namespace Lab6
                 chair.Push(new Chair());
             }
 
+        }
+        public void OpenBar()
+        {
+            IsOpen = true;
+            var bouncer = new Bouncer(this);
+            var waitress = new Waitress(this);
+            var bartender = new Bartender(this);
+            bouncer.Work();
+            waitress.Work();
+            bartender.Work();
             BarInfo();
         }
         public void BarInfo()
@@ -64,12 +72,16 @@ namespace Lab6
                     mainWindow.Dispatcher.Invoke(() =>
                     {
                         mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {guest.Count}";
-                        //mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {Patron.NumOfGuestsInBar}";
                         mainWindow.numOfGlassesInShelfLable.Content = $"Number of glasses in shelf: {shelf.Count} (Max: {MaxNumOfGlasses})";
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
                 }
             }); 
+        }
+        public void Log(string text, MainWindow.LogBox listbox)
+        {
+            string timeStamp = DateTime.Now.ToString("T");
+            mainWindow.LogEvent($"{timeStamp} {text}", listbox);
         }
     }
 }

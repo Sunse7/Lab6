@@ -28,25 +28,29 @@ namespace Lab6
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
             Name = names[randomName];           
-
+                        
+        }
+        public void Visit()
+        {
             Task.Run(() =>
             {
                 NumOfGuestsInBar++;
-                while (bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
+                while (Bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
                 {
-                    bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
+                    bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
                     Thread.Sleep(bar.TimeToWalkToBar);
-                    bar.mainWindow.PatronListBoxMessage($"{Name} walks to the bar");
+                    bar.Log($"{Name} walks to the bar", MainWindow.LogBox.Patron);
                     LookForEmptyChair();
-                    bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
+                    bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
                     Thread.Sleep(bar.TimeToDrinkBeer);
                     bar.table.Push(glass);
                     bar.chair.Push(chair);
-                    bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
+                    bar.Log($"{Name} leaves the bar", MainWindow.LogBox.Patron);
                     bar.patronList.Remove(this);
                     NumOfGuestsInBar--;
                 }
             });
+
         }
         private void LookForEmptyChair()
         {            
@@ -57,7 +61,7 @@ namespace Lab6
             if (bar.chair.Count > 0 && bar.GotBeer)
             {
                 bar.GotBeer = false; //Should work now
-                bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
+                bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
                 Thread.Sleep(bar.TimeToFindChair);
                 bar.chair.TryPop(out chair);
             }            

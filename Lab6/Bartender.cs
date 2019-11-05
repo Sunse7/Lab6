@@ -16,24 +16,20 @@ namespace Lab6
         {
             this.bar = bar;
 
+            
+        }
+        public void Work()
+        {
             Task.Run(() =>
             {
                 while (true) //Bartender goes home when the last guest leaves
                 {
-                    //Loop for every new guest?
-                    
-                    bar.mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
-                    //Patron thisPatron = LookingForGuest();  
+                    bar.Log("Waiting for guests to arrive", MainWindow.LogBox.Bartender);
                     LookingForGuest();
                     WhenGuestOrders();
-                    
-                    /*if(bar.guest.?)
-                    {   
-                        //Last guest leaves not IsEmpty
-                        bar.mainWindow.BartenderListBoxMessage("Batrender goes home");
-                    }*/
                 }
             });
+
         }
         private void LookingForGuest()
         {
@@ -43,8 +39,7 @@ namespace Lab6
             }
             if (bar.guest.TryPeek(out patron))
             {
-               // bar.guest.TryDequeue(out patron);
-                bar.mainWindow.BartenderListBoxMessage("Walking to shelf");
+                bar.Log("Walking to shelf", MainWindow.LogBox.Bartender);
                 Thread.Sleep(bar.TimeToGetGlass);
                 
             }
@@ -76,7 +71,7 @@ namespace Lab6
             {
                 bar.shelf.TryPop(out glass);
                 Thread.Sleep(bar.TimeToPourBeer);
-                bar.mainWindow.BartenderListBoxMessage($"Gives beer to guest");
+                bar.Log($"Gives beer to guest", MainWindow.LogBox.Bartender);
                 bar.GotBeer = true;
             }
         }

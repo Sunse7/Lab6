@@ -14,19 +14,22 @@ namespace Lab6
         public Waitress(Bar bar)
         {
             this.bar = bar;
-
+                       
+        }
+        public void Work()
+        {
             Task.Run(() => 
             {
                 while (Bar.IsOpen)
                 {
                     WaitToPickGlasses(); //Check for dirty glasses
-                    bar.mainWindow.WaitressListBoxMessage("Picking up glass from table");                    
+                    bar.Log("Picking up dirty glasses from the tables", MainWindow.LogBox.Waitress);                   
                     DoDishes();
-                    bar.mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");                    
+                    bar.Log("Washing the dirty glasses and putting them back onto the shelf", MainWindow.LogBox.Waitress);                    
                 }                
             });
-        }
 
+        }
         private void WaitToPickGlasses()
         {
             while (bar.table.Count == 0)
