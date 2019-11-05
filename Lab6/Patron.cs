@@ -10,6 +10,7 @@ namespace Lab6
     class Patron
     {
         public string Name { get; set; }
+        public static int NumOfGuestsInBar { get; set; } = 0;
         List<string> names = new List<string>();
         BeerGlass glass;
         Chair chair;
@@ -25,24 +26,25 @@ namespace Lab6
             
             bar.patronList.Add(this);
             names.AddRange(patronNames);
-            int randomName = Bar.random.Next(0, names.Count);            
+            int randomName = Bar.random.Next(0, names.Count);
             Name = names[randomName];           
 
             Task.Run(() =>
             {
+                NumOfGuestsInBar++;
                 while (bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
                 {
                     bar.mainWindow.PatronListBoxMessage($"{Name} enters the bar");
-                    Thread.Sleep(1000); //Walk to bar
+                    Thread.Sleep(bar.TimeToWalkToBar);
                     bar.mainWindow.PatronListBoxMessage($"{Name} walks to the bar");
                     LookForEmptyChair();
-                    Thread.Sleep(bar.TimeToDrinkBeer); //Drink beer
-
+                    bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
+                    Thread.Sleep(bar.TimeToDrinkBeer);
                     bar.table.Push(glass);
                     bar.chair.Push(chair);
                     bar.mainWindow.PatronListBoxMessage($"{Name} leaves bar");
                     bar.patronList.Remove(this);
-
+                    NumOfGuestsInBar--;
                 }
             });
         }
@@ -54,11 +56,10 @@ namespace Lab6
             }
             if (bar.chair.Count > 0 && bar.GotBeer)
             {
-                bar.GotBeer = false; //First guest does not LookForEmptyChair(); bool needs to be somewhere else
+                bar.GotBeer = false; //Should work now
                 bar.mainWindow.PatronListBoxMessage($"{Name} looks for an empty chair");
                 Thread.Sleep(bar.TimeToFindChair);
                 bar.chair.TryPop(out chair);
-                bar.mainWindow.PatronListBoxMessage($"{Name} sits down and drinks its beer");
             }            
         }       
     }

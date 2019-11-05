@@ -13,10 +13,12 @@
         <ListBox x:Name="bartenderListBox" HorizontalAlignment="Left" Height="100" Margin="101,26,0,0" VerticalAlignment="Top" Width="247"/>
         <ListBox x:Name="waitressListBox" HorizontalAlignment="Left" Height="100" Margin="101,145,0,0" VerticalAlignment="Top" Width="247"/>
         <ListBox x:Name="patronListBox" HorizontalAlignment="Left" Height="133" Margin="101,265,0,0" VerticalAlignment="Top" Width="246"/>
-        <Label x:Name="barInfoLable" Content="Info" HorizontalAlignment="Left" Margin="525,90,0,0" VerticalAlignment="Top" Height="224" Width="169"/>
+        <Label x:Name="numOfGuestInBarLable" Content="Info" HorizontalAlignment="Left" Margin="448,84,0,0" VerticalAlignment="Top" Height="42" Width="311"/>
         <Label Content="The bar closes in:" HorizontalAlignment="Left" Margin="448,26,0,0" VerticalAlignment="Top" Width="102"/>
         <TextBox x:Name="countdownTextBox" Margin="555,26,153.333,366.667" />
         <Button Content="Open bar" Click="Button_Click" Width="150" Margin="400,372,243.333,22.667" />
+        <Label x:Name="numOfGlassesInShelfLable" Content="Label" HorizontalAlignment="Left" Margin="448,162,0,0" VerticalAlignment="Top" Width="311" Height="42"/>
+        <Label x:Name="numOfEmptyChairsLable" Content="Label" HorizontalAlignment="Left" Margin="448,236,0,0" VerticalAlignment="Top" Height="42" Width="311"/>
 
     </Grid>
 </Window>

@@ -23,7 +23,8 @@ namespace Lab6
                     //Loop for every new guest?
                     
                     bar.mainWindow.BartenderListBoxMessage("Waiting for guest to arraive");
-                    LookingForGuest();                   
+                    //Patron thisPatron = LookingForGuest();  
+                    LookingForGuest();
                     WhenGuestOrders();
                     
                     /*if(bar.guest.?)
@@ -35,6 +36,21 @@ namespace Lab6
             });
         }
         private void LookingForGuest()
+        {
+            while (bar.guest.Count == 0)
+            {
+                Thread.Sleep(50);
+            }
+            if (bar.guest.TryPeek(out patron))
+            {
+               // bar.guest.TryDequeue(out patron);
+                bar.mainWindow.BartenderListBoxMessage("Walking to shelf");
+                Thread.Sleep(bar.TimeToGetGlass);
+                
+            }
+            
+        }
+      /*  private Patron LookingForGuest()
         {            
             while(bar.guest.Count == 0)
             {
@@ -42,10 +58,14 @@ namespace Lab6
             }
             if (bar.guest.TryPeek(out patron))
             {
+                bar.guest.TryDequeue(out patron);
                 bar.mainWindow.BartenderListBoxMessage("Walking to shelf");
                 Thread.Sleep(bar.TimeToGetGlass);
-            }         
-        }
+                return patron;
+            }
+            else
+                return null;
+        }*/
         private void WhenGuestOrders() //WhenGuestArrives?
         {
             while(bar.shelf.Count == 0)

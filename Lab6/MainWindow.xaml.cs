@@ -27,6 +27,7 @@ namespace Lab6
             InitializeComponent();
             Bar bar = new Bar(this);
             
+            
         }
         public void BartenderListBoxMessage(string message)
         {
