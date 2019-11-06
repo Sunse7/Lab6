@@ -23,12 +23,11 @@ namespace Lab6
         public Patron(Bar bar)
         {
             this.bar = bar;
-            
             bar.patronList.Add(this);
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
-            Name = names[randomName];           
-                        
+            Name = names[randomName];
+            Visit();            
         }
         public void Visit()
         {
@@ -41,13 +40,8 @@ namespace Lab6
                     Thread.Sleep(bar.TimeToWalkToBar);
                     bar.Log($"{Name} walks to the bar", MainWindow.LogBox.Patron);
                     LookForEmptyChair();
-                    bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
-                    Thread.Sleep(bar.TimeToDrinkBeer);
-                    bar.table.Push(glass);
-                    bar.chair.Push(chair);
-                    bar.Log($"{Name} leaves the bar", MainWindow.LogBox.Patron);
-                    bar.patronList.Remove(this);
-                    NumOfGuestsInBar--;
+                    DrinkBeer();
+                    ExitBar();
                 }
             });
 
@@ -65,6 +59,19 @@ namespace Lab6
                 Thread.Sleep(bar.TimeToFindChair);
                 bar.chair.TryPop(out chair);
             }            
-        }       
+        } 
+        private void DrinkBeer()
+        {
+            bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
+            Thread.Sleep(bar.TimeToDrinkBeer);
+            bar.table.Push(glass);
+            bar.chair.Push(chair);
+        }
+        private void ExitBar()
+        {
+            bar.Log($"{Name} leaves the bar", MainWindow.LogBox.Patron);
+            bar.patronList.Remove(this);
+            NumOfGuestsInBar--;
+        }
     }
 }

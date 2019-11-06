@@ -24,6 +24,7 @@ namespace Lab6
                 {
                     Thread.Sleep(bar.TimeToCheckID);
                     bar.guest.Enqueue(new Patron(bar));
+                    
                 }
                 bar.Log("The Bouncer goes home", MainWindow.LogBox.Patron);
                 //bar.mainWindow.PatronListBoxMessage("Bouncer goes home"); //When bar closes
