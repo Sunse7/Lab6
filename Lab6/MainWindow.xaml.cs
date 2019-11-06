@@ -23,7 +23,7 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
-        public enum LogBox { Event, Bartender, Waitress, Patron }
+        public enum LogBox { Bartender, Waitress, Patron }
         Bar bar;
         public MainWindow()
         {

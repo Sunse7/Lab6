@@ -22,7 +22,7 @@ namespace Lab6
         {
             Task.Run(() =>
             {
-                while (true) //Bartender goes home when the last guest leaves
+                while (Bar.IsOpen) //Bartender goes home when the last guest leaves
                 {
                     bar.Log("Waiting for guests to arrive", MainWindow.LogBox.Bartender);
                     LookingForGuest();
@@ -71,7 +71,7 @@ namespace Lab6
             {
                 bar.shelf.TryPop(out glass);
                 Thread.Sleep(bar.TimeToPourBeer);
-                bar.Log($"Gives beer to guest", MainWindow.LogBox.Bartender);
+                bar.Log($"Gives beer to {patron.Name}", MainWindow.LogBox.Bartender);
                 bar.GotBeer = true;
             }
         }

@@ -54,7 +54,7 @@ namespace Lab6
         }
         public void OpenBar()
         {
-            IsOpen = true;
+            Bar.IsOpen = true;
             var bouncer = new Bouncer(this);
             var waitress = new Waitress(this);
             var bartender = new Bartender(this);
