@@ -21,54 +21,35 @@ namespace Lab6
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        public enum LogBox { Bartender, Waitress, Patron }
+        Bar bar;
         public MainWindow()
         {
-            InitializeComponent();
-            Bar bar = new Bar(this);
-            
-            
+            InitializeComponent();            
         }
-        public void BartenderListBoxMessage(string message)
+        public void LogEvent(string text, LogBox textblock)
         {
-            Dispatcher.Invoke(() =>
+            switch (textblock)
             {
-                bartenderListBox.Items.Insert(0, message);             
-            });
-        }        
-        public void WaitressListBoxMessage(string message)
-        {
-            Dispatcher.Invoke(() => 
-            {
-                waitressListBox.Items.Insert(0, message);
-            });
+                case LogBox.Bartender:
+                    this.Dispatcher.Invoke(() => bartenderListBox.Items.Insert(0, text));
+                    break;
+                case LogBox.Patron:
+                    this.Dispatcher.Invoke(() => patronListBox.Items.Insert(0, text));
+                    break;
+                case LogBox.Waitress:
+                    this.Dispatcher.Invoke(() => waitressListBox.Items.Insert(0, text));
+                    break;
+            }
         }
-        public void PatronListBoxMessage(string message)
+        private void OnOpenBarButtonClick(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(() => 
-            {
-                patronListBox.Items.Insert(0, message);
-            });
+            bar = new Bar(this);
+            bar.Countdown(120, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());            
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnCloseBarButtonClick(object sender, RoutedEventArgs e)
         {
-            Countdown(120, TimeSpan.FromSeconds(1), cur => countdownTextBox.Text = cur.ToString());
-            
-        }
-        void Countdown(int count, TimeSpan interval, Action<int> ts)
-        {
-            var dt = new System.Windows.Threading.DispatcherTimer();
-            dt.Interval = interval;
-            dt.Tick += (_, a) =>
-            {
-                if (count-- == 0)
-                    dt.Stop();
-                else
-                    ts(count);
-            };
-            ts(count);
-            dt.Start();
-        }
+            bar.IsOpen = false;
+        }         
     }
 }

@@ -19,38 +19,37 @@ namespace Lab6
             {
                 while (bar.IsOpen)
                 {
-                    WaitToPickGlasses(); //Check for dirty glasses
-                    bar.mainWindow.WaitressListBoxMessage("Picking up glass from table");                    
+                    WaitToPickGlasses();                                     
                     DoDishes();
-                    bar.mainWindow.WaitressListBoxMessage("Washing glass and putting it back in the shelf");                    
                 }                
             });
         }
-
         private void WaitToPickGlasses()
         {
             while (bar.table.Count == 0)
             {
                 Thread.Sleep(50);
             }
-
-            if (bar.table.Count != 0)
+            if (bar.table.Count > 0)
             {
                 foreach (var item in bar.table)
                 {
-                    bar.table.TryPop(out glass);
+                    bar.table.TryPop(out this.glass);
                 }
+                bar.Log("Picking up glass from table", MainWindow.LogBox.Waitress);
                 Thread.Sleep(bar.TimeToPickGlasses);
             }
         }
-
         private void DoDishes()
         {
+            bar.Log("Washing glasses", MainWindow.LogBox.Waitress);
+            Thread.Sleep(bar.TimeToDoDishes);
+            bar.Log("Putting it back in the shelf", MainWindow.LogBox.Waitress);
+
             foreach (var item in bar.table)
             {
-                bar.shelf.Push(glass);
+                bar.shelf.Push(this.glass);
             }
-            Thread.Sleep(bar.TimeToDoDishes);
         }
     }
 }

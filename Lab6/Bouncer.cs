@@ -10,10 +10,8 @@ namespace Lab6
 {
     class Bouncer
     {
-        
         public Bouncer(Bar bar)
-        {
-            
+        {            
             Task.Run(() => 
             {
                 while (bar.IsOpen)
@@ -21,7 +19,7 @@ namespace Lab6
                     Thread.Sleep(bar.TimeToCheckID);
                     bar.guest.Enqueue(new Patron(bar));
                 }
-                bar.mainWindow.PatronListBoxMessage("Bouncer goes home"); //When bar closes
+                bar.Log("Bouncer goes home", MainWindow.LogBox.Patron); //When bar closes
             });
         }        
     }
