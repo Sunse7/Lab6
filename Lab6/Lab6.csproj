@@ -59,7 +59,6 @@
     <Compile Include="Chair.cs" />
     <Compile Include="Bartender.cs" />
     <Compile Include="BeerGlass.cs" />
-    <Compile Include="TimeStamp.cs" />
     <Compile Include="Waitress.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -10,7 +10,6 @@ namespace Lab6
     class Patron
     {
         public string Name { get; set; }
-        public static int NumOfGuestsInBar { get; set; } = 0;
         List<string> names = new List<string>();
         BeerGlass glass;
         Chair chair;
@@ -23,55 +22,63 @@ namespace Lab6
         public Patron(Bar bar)
         {
             this.bar = bar;
+            
             bar.patronList.Add(this);
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
-            Name = names[randomName];
-            Visit();            
-        }
-        public void Visit()
-        {
+            Name = names[randomName];           
+
             Task.Run(() =>
             {
-                NumOfGuestsInBar++;
-                while (Bar.IsOpen) //? Bar closes in TimeStamp when button click CloseBar or time hits 0
+                while (bar.IsOpen) //? Bar closes when button click CloseBar or time hits 0
                 {
-                    bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
-                    Thread.Sleep(bar.TimeToWalkToBar);
-                    bar.Log($"{Name} walks to the bar", MainWindow.LogBox.Patron);
-                    LookForEmptyChair();
-                    DrinkBeer();
-                    ExitBar();
+                    EnterBar().Wait();
+                    LookForEmptyChair().Wait();
+                    DrinkBeer().Wait();
+                    ExitBar();           
                 }
             });
-
         }
-        private void LookForEmptyChair()
-        {            
-            while (bar.chair.Count == 0)
+        private async Task EnterBar()
+        {
+            bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
+            Thread.Sleep(bar.TimeToWalkToBar);
+            bar.Log($"{Name} walks to the bar", MainWindow.LogBox.Patron);            
+        }        
+        public async Task LookForEmptyChair()
+        {
+            if (bar.GotBeer == true)
+            {
+                if (bar.chair.Count > 0)
+                {
+                    bar.GotBeer = false;
+                    bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
+                    Thread.Sleep(bar.TimeToFindChair);
+                    bar.chair.TryPop(out this.chair);
+                }
+                else
+                {
+                    Thread.Sleep(50);
+                    LookForEmptyChair();
+                }
+            }            
+            else
             {
                 Thread.Sleep(50);
-            }
-            if (bar.chair.Count > 0 && bar.GotBeer)
-            {
-                bar.GotBeer = false; //Should work now
-                bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
-                Thread.Sleep(bar.TimeToFindChair);
-                bar.chair.TryPop(out chair);
+                LookForEmptyChair();
             }            
-        } 
-        private void DrinkBeer()
+        }
+        private async Task DrinkBeer()
         {
             bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
-            Thread.Sleep(bar.TimeToDrinkBeer);
-            bar.table.Push(glass);
-            bar.chair.Push(chair);
+            Thread.Sleep(bar.TimeToDrinkBeer);            
         }
-        private void ExitBar()
+        private async Task ExitBar()
         {
-            bar.Log($"{Name} leaves the bar", MainWindow.LogBox.Patron);
-            bar.patronList.Remove(this);
-            NumOfGuestsInBar--;
+            bar.table.Push(this.glass);
+            bar.chair.Push(this.chair);
+            bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);
+            bar.patronList.Remove(this);            
         }
     }
 }

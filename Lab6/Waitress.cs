@@ -14,21 +14,15 @@ namespace Lab6
         public Waitress(Bar bar)
         {
             this.bar = bar;
-                       
-        }
-        public void Work()
-        {
+
             Task.Run(() => 
             {
-                while (Bar.IsOpen)
+                while (bar.IsOpen)
                 {
-                    WaitToPickGlasses(); //Check for dirty glasses
-                    bar.Log("Picking up dirty glasses from the tables", MainWindow.LogBox.Waitress);                   
+                    WaitToPickGlasses();                                     
                     DoDishes();
-                    bar.Log("Washing the dirty glasses and putting them back onto the shelf", MainWindow.LogBox.Waitress);                    
                 }                
             });
-
         }
         private void WaitToPickGlasses()
         {
@@ -36,24 +30,26 @@ namespace Lab6
             {
                 Thread.Sleep(50);
             }
-
-            if (bar.table.Count != 0)
+            if (bar.table.Count > 0)
             {
                 foreach (var item in bar.table)
                 {
-                    bar.table.TryPop(out glass);
+                    bar.table.TryPop(out this.glass);
                 }
+                bar.Log("Picking up glass from table", MainWindow.LogBox.Waitress);
                 Thread.Sleep(bar.TimeToPickGlasses);
             }
         }
-
         private void DoDishes()
         {
+            bar.Log("Washing glasses", MainWindow.LogBox.Waitress);
+            Thread.Sleep(bar.TimeToDoDishes);
+            bar.Log("Putting it back in the shelf", MainWindow.LogBox.Waitress);
+
             foreach (var item in bar.table)
             {
-                bar.shelf.Push(glass);
+                bar.shelf.Push(this.glass);
             }
-            Thread.Sleep(bar.TimeToDoDishes);
         }
     }
 }

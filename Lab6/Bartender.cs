@@ -12,26 +12,29 @@ namespace Lab6
         BeerGlass glass;
         Bar bar;
         Patron patron;
+        
         public Bartender(Bar bar)
-        {
+        {            
             this.bar = bar;
 
-            
-        }
-        public void Work()
-        {
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                while (Bar.IsOpen) //Bartender goes home when the last guest leaves
-                {
-                    bar.Log("Waiting for guests to arrive", MainWindow.LogBox.Bartender);
-                    LookingForGuest();
-                    WhenGuestOrders();
+                while (true) //Bartender goes home when the last guest leaves
+                {                     
+                    bar.Log("Waiting for guest to arraive", MainWindow.LogBox.Bartender);
+
+                    await LookingForGuest();
+                    await WhenGuestOrders();
+                    
+                    if(bar.patronList.Count == 0 && bar.IsOpen == false)
+                    {   
+                        //Last guest leaves not IsEmpty
+                        bar.Log("Batrender goes home", MainWindow.LogBox.Bartender);
+                    }
                 }
             });
-
         }
-        private void LookingForGuest()
+        private async Task LookingForGuest()
         {
             while (bar.guest.Count == 0)
             {
@@ -39,40 +42,23 @@ namespace Lab6
             }
             if (bar.guest.TryPeek(out patron))
             {
+                Thread.Sleep(bar.TimeToGetGlass);                
                 bar.Log("Walking to shelf", MainWindow.LogBox.Bartender);
-                Thread.Sleep(bar.TimeToGetGlass);
-                
-            }
-            
+            }            
         }
-      /*  private Patron LookingForGuest()
-        {            
-            while(bar.guest.Count == 0)
-            {
-                Thread.Sleep(50);
-            }
-            if (bar.guest.TryPeek(out patron))
-            {
-                bar.guest.TryDequeue(out patron);
-                bar.mainWindow.BartenderListBoxMessage("Walking to shelf");
-                Thread.Sleep(bar.TimeToGetGlass);
-                return patron;
-            }
-            else
-                return null;
-        }*/
-        private void WhenGuestOrders() //WhenGuestArrives?
+        public async Task WhenGuestOrders()
         {
-            while(bar.shelf.Count == 0)
-            {
-                Thread.Sleep(50);
-            }
             if(bar.shelf.Count != 0)
             {
-                bar.shelf.TryPop(out glass);
+                bar.shelf.TryPop(out this.glass);
                 Thread.Sleep(bar.TimeToPourBeer);
-                bar.Log($"Gives beer to {patron.Name}", MainWindow.LogBox.Bartender);
-                bar.GotBeer = true;
+                bar.Log("Gives beer to guest", MainWindow.LogBox.Bartender);
+                bar.GotBeer = true;                
+            }
+            else
+            {
+                Thread.Sleep(50);
+                WhenGuestOrders();
             }
         }
     }

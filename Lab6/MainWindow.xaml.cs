@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -27,21 +25,8 @@ namespace Lab6
         Bar bar;
         public MainWindow()
         {
-            InitializeComponent();
-            bar = new Bar(this);
-            OpenBarButton.Click += Open_Bar_Click;
+            InitializeComponent();            
         }
-
-
-        private void Open_Bar_Click(object sender, RoutedEventArgs e)
-        {
-            if (!Bar.IsOpen)
-            {
-                bar.OpenBar();
-                OpenBarButton.Click += Open_Bar_Click;
-            }
-        }
-
         public void LogEvent(string text, LogBox textblock)
         {
             switch (textblock)
@@ -57,6 +42,14 @@ namespace Lab6
                     break;
             }
         }
-
+        private void OnOpenBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            bar = new Bar(this);
+            bar.Countdown(120, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());            
+        }
+        private void OnCloseBarButtonClick(object sender, RoutedEventArgs e)
+        {
+            bar.IsOpen = false;
+        }         
     }
 }

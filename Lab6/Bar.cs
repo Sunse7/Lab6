@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace Lab6
 {
-    class Bar //Label content: Num of guests, time to bar closes, num of glasses/shelf, num of chairs in Chair
+    class Bar
     {
         private static int MaxNumOfGlasses = 8;
         private static int MaxNumOfChairs = 9;
@@ -19,8 +20,8 @@ namespace Lab6
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
         public List<Patron> patronList;
-        public static bool IsOpen { get; set; }
-        public bool GotBeer = false;
+        public bool IsOpen = true;
+        public bool GotBeer { get; set; } = false;
         public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
         public int TimeToWalkToBar = 1000;
@@ -29,8 +30,7 @@ namespace Lab6
         public int TimeToPourBeer = 3000;
         public int TimeToPickGlasses = 10000;
         public int TimeToDoDishes = 15000;
-        // public static int NumOfGuestsInBar;
-        
+        public int BarIsOpenTime = 120;
 
         public Bar(MainWindow mainWindow)
         {
@@ -40,7 +40,9 @@ namespace Lab6
             chair = new ConcurrentStack<Chair>();
             guest = new ConcurrentQueue<Patron>();
             patronList = new List<Patron>();
-            
+            var bouncer = new Bouncer(this);
+            var waitress = new Waitress(this);
+            var bartender = new Bartender(this);
             
             for (int i = 0; i < MaxNumOfGlasses; i++)
             {
@@ -51,16 +53,6 @@ namespace Lab6
                 chair.Push(new Chair());
             }
 
-        }
-        public void OpenBar()
-        {
-            Bar.IsOpen = true;
-            var bouncer = new Bouncer(this);
-            var waitress = new Waitress(this);
-            var bartender = new Bartender(this);
-            bouncer.Work();
-            waitress.Work();
-            bartender.Work();
             BarInfo();
         }
         public void BarInfo()
@@ -71,7 +63,7 @@ namespace Lab6
                     Thread.Sleep(50);                    
                     mainWindow.Dispatcher.Invoke(() =>
                     {
-                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {guest.Count}";
+                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {patronList.Count}";                        
                         mainWindow.numOfGlassesInShelfLable.Content = $"Number of glasses in shelf: {shelf.Count} (Max: {MaxNumOfGlasses})";
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
@@ -80,8 +72,22 @@ namespace Lab6
         }
         public void Log(string text, MainWindow.LogBox listbox)
         {
-            string timeStamp = DateTime.Now.ToString("T");
+            string timeStamp = DateTime.Now.ToString("mm:ss");
             mainWindow.LogEvent($"{timeStamp} {text}", listbox);
+        }
+        public void Countdown(int count, TimeSpan interval, Action<int> ts)
+        {
+            var dt = new DispatcherTimer();
+            dt.Interval = interval;
+            dt.Tick += (_, a) =>
+            {
+                if (count-- == 0)
+                    dt.Stop();
+                else
+                    ts(count);
+            };
+            ts(count);
+            dt.Start();
         }
     }
 }
