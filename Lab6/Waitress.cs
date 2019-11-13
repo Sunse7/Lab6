@@ -17,11 +17,12 @@ namespace Lab6
 
             Task.Run(() => 
             {
-                while (bar.IsOpen)
+                do
                 {
-                    WaitToPickGlasses();                                     
+                    WaitToPickGlasses();
                     DoDishes();
-                }                
+                }
+                while (bar.IsOpen && bar.patronList.Count > 0);
             });
         }
         private void WaitToPickGlasses()

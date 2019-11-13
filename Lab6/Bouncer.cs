@@ -10,17 +10,26 @@ namespace Lab6
 {
     class Bouncer
     {
+        Patron patron;
+        Bar bar;
         public Bouncer(Bar bar)
-        {            
+        {
+            this.bar = bar;
+
             Task.Run(() => 
             {
                 while (bar.IsOpen)
                 {
-                    Thread.Sleep(bar.TimeToCheckID);
+                    Thread.Sleep(bar.TimeToCheckID / 2);
+                    if (bar.mainWindow.token.IsCancellationRequested)
+                    {                        
+                        return;
+                    }
                     bar.guest.Enqueue(new Patron(bar));
+                    Thread.Sleep(bar.TimeToCheckID / 2);
                 }
-                bar.Log("Bouncer goes home", MainWindow.LogBox.Patron); //When bar closes
-            });
-        }        
+                bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
+            });            
+        }    
     }
 }

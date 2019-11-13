@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Lab6
 {
@@ -23,9 +24,12 @@ namespace Lab6
     {
         public enum LogBox { Bartender, Waitress, Patron }
         Bar bar;
+        public CancellationTokenSource source = new CancellationTokenSource();
+        public CancellationToken token;
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            token = source.Token;
         }
         public void LogEvent(string text, LogBox textblock)
         {
@@ -45,11 +49,12 @@ namespace Lab6
         private void OnOpenBarButtonClick(object sender, RoutedEventArgs e)
         {
             bar = new Bar(this);
-            bar.Countdown(120, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());            
+            bar.Countdown(bar.BarIsOpenTime, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());            
         }
         private void OnCloseBarButtonClick(object sender, RoutedEventArgs e)
         {
             bar.IsOpen = false;
+            source.Cancel();
         }         
     }
 }

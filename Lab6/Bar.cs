@@ -22,7 +22,9 @@ namespace Lab6
         public List<Patron> patronList;
         public bool IsOpen = true;
         public bool GotBeer { get; set; } = false;
-        public int TimeToCheckID = random.Next(3000, 10001);
+        public static int min = 3000;
+        public static int max = 10001;
+        public int TimeToCheckID = random.Next(min, max);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
         public int TimeToWalkToBar = 1000;
         public int TimeToFindChair = 4000;
@@ -52,7 +54,7 @@ namespace Lab6
             {
                 chair.Push(new Chair());
             }
-
+            
             BarInfo();
         }
         public void BarInfo()
@@ -82,7 +84,10 @@ namespace Lab6
             dt.Tick += (_, a) =>
             {
                 if (count-- == 0)
+                {
                     dt.Stop();
+                    IsOpen = false;
+                }
                 else
                     ts(count);
             };
