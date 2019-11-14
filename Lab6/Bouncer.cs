@@ -18,24 +18,51 @@ namespace Lab6
             {
                 while (bar.IsOpen)
                 {
-                    Thread.Sleep(bar.TimeToCheckID / 2);
-                    if (bar.mainWindow.token.IsCancellationRequested)
-                    {                        
-                        return;
+                    if (bar.CouplesNight)
+                    {
+                        CouplesNightTime();
                     }
-                    bar.guest.Enqueue(new Patron(bar));
-                    Thread.Sleep(bar.TimeToCheckID / 2);
+                    else if (bar.Busload)
+                    {
+                        BusloadTime();
+                    }
+                    else
+                    {
+                        Thread.Sleep(bar.TimeToCheckID / 2);
+                        if (bar.mainWindow.token.IsCancellationRequested)
+                        {
+                            return;
+                        }
+                        bar.guest.Enqueue(new Patron(bar));
+                        Thread.Sleep(bar.TimeToCheckID / 2);
+                    }
+                    
                 }
                 bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
             });            
         }
         private void CouplesNightTime()
         {
-
+            Thread.Sleep(bar.TimeToCheckID / 2);
+            if (bar.mainWindow.token.IsCancellationRequested)
+            {
+                return;
+            }
+            bar.guest.Enqueue(new Patron(bar));
+            bar.guest.Enqueue(new Patron(bar));
+            Thread.Sleep(bar.TimeToCheckID / 2);
         }
         private void BusloadTime()
         {
-
+            //First 20 sec
+            Thread.Sleep(bar.TimeToCheckID * 2);
+            if (bar.mainWindow.token.IsCancellationRequested)
+            {
+                return;
+            }
+            bar.guest.Enqueue(new Patron(bar));
+            Thread.Sleep(bar.TimeToCheckID * 2);
+            //Enqueue 15
         }
     }
 }
