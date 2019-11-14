@@ -21,30 +21,23 @@ namespace Lab6
         
         public Patron(Bar bar)
         {
-            this.bar = bar;
-            
+            this.bar = bar;            
             bar.patronList.Add(this);
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
             Name = names[randomName];
-            Run();
-            
+            Run();            
         }
         private void Run()
         {
             Task.Run(() =>
             {
-                while (bar.IsOpen || bar.IsOpen) //Då kommer spöket in men alla går in igen efter 
-                                                            //att dom har lämnat baren
+                while (bar.IsOpen)
                 {
                     EnterBar();
-                   // if (bar.GotBeer == false)
-                    //{
-                        LookForEmptyChair();
-                        DrinkBeer();
-                        ExitBar();
-
-                    //}
+                    LookForEmptyChair();
+                    DrinkBeer();
+                    ExitBar();
                 }
             });
         }
@@ -53,11 +46,13 @@ namespace Lab6
             bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
             Thread.Sleep(bar.TimeToWalkToBar);
             bar.Log($"{Name} arrives at the bar", MainWindow.LogBox.Patron);            
+            bar.WaitingPatrons++;
         }        
         public void LookForEmptyChair()
         {
             if (bar.GotBeer == true)
             {
+                    bar.WaitingPatrons--;
                 if (bar.chair.Count > 0)
                 {
                     bar.GotBeer = false;

@@ -10,12 +10,8 @@ namespace Lab6
 {
     class Bouncer
     {
-        Patron patron;
-        Bar bar;
         public Bouncer(Bar bar)
         {
-            this.bar = bar;
-
             Task.Run(() => 
             {
                 while (bar.IsOpen)

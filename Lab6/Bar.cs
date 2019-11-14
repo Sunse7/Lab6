@@ -21,6 +21,9 @@ namespace Lab6
         public ConcurrentQueue<Patron> guest;
         public List<Patron> patronList;
         public bool IsOpen = true;
+        public int WaitingPatrons = 0;
+        public bool WaitressIsPresent = true;
+        public bool BartenderWorking { get; set; } = true;
         public bool GotBeer { get; set; } = false;
         public static int min = 3000;
         public static int max = 10001;

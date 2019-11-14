@@ -21,8 +21,15 @@ namespace Lab6
                 {
                     WaitToPickGlasses();
                     DoDishes();
+                    if (bar.BartenderWorking == false)
+                    {
+                        break;
+                    }
                 }
                 while (bar.IsOpen && bar.patronList.Count > 0);
+                bar.Log("Waitress goes home", MainWindow.LogBox.Waitress);
+                bar.WaitressIsPresent = false;
+                
             });
         }
         private void WaitToPickGlasses()
@@ -35,7 +42,7 @@ namespace Lab6
             {
                 foreach (var item in bar.table)
                 {
-                    bar.table.TryPop(out this.glass);
+                    bar.table.TryPop(out glass);
                 }
                 bar.Log("Picking up glass from table", MainWindow.LogBox.Waitress);
                 Thread.Sleep(bar.TimeToPickGlasses);
@@ -49,7 +56,7 @@ namespace Lab6
 
             foreach (var item in bar.table)
             {
-                bar.shelf.Push(this.glass);
+                bar.shelf.Push(glass);
             }
         }
     }

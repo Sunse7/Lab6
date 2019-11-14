@@ -17,38 +17,41 @@ namespace Lab6
         {            
             this.bar = bar;
 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
-                while (bar.guest.Count > 0 || bar.IsOpen) //Think it works
+
+                while ((bar.patronList.Count + bar.guest.Count) > 0 || bar.IsOpen)
                 {
                     bar.Log("Waiting for guest to arraive", MainWindow.LogBox.Bartender);
 
-                    await LookingForGuest();
-                    await WhenGuestOrders();
+                    LookingForGuest();
+                    WhenGuestOrders();
                 }
-                
-
-                if (bar.patronList.Count == 0 && bar.IsOpen == false)
-                {
-                    bar.Log("Batrender goes home", MainWindow.LogBox.Bartender);
-                }
-            });
+                //GoHome();
+                //bar.Log("I'll go home now", MainWindow.LogBox.Bartender);
+               // bar.BartenderWorking = false;
+            }, bar.mainWindow.token);
         }
-        private async Task LookingForGuest()
+        private void LookingForGuest()
         {
             while (bar.guest.Count == 0)
             {
                 Thread.Sleep(50);
+                if (bar.mainWindow.token.IsCancellationRequested)
+                {
+                    GoHome();
+                    break;
+                }
             }
             if (bar.guest.TryDequeue(out patron))
             {
                 Thread.Sleep(bar.TimeToGetGlass);                
                 bar.Log("Walking to shelf", MainWindow.LogBox.Bartender);
-            }            
+            }         
         }
-        public async Task WhenGuestOrders()
+        public void WhenGuestOrders()
         {
-            if(bar.shelf.Count != 0)
+            if(bar.shelf.Count != 0 && this.patron != null)
             {
                 bar.shelf.TryPop(out this.glass);
                 Thread.Sleep(bar.TimeToPourBeer);
@@ -60,6 +63,12 @@ namespace Lab6
                 Thread.Sleep(50);
                 WhenGuestOrders();
             }
+        }
+        private void GoHome()
+        {
+            while ((bar.patronList.Count + bar.guest.Count) > 0 || bar.WaitressIsPresent) { }
+            bar.Log("I'll go home now", MainWindow.LogBox.Bartender);
+            bar.BartenderWorking = false;
         }
     }
 }
