@@ -35,8 +35,7 @@ namespace Lab6
                         }
                         bar.guest.Enqueue(new Patron(bar));
                         Thread.Sleep(bar.TimeToCheckID / 2);
-                    }
-                    
+                    }                    
                 }
                 bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
             });            
@@ -54,15 +53,24 @@ namespace Lab6
         }
         private void BusloadTime()
         {
-            //First 20 sec
-            Thread.Sleep(bar.TimeToCheckID * 2);
+            if (bar.TimeUntilBarCloses <= 100) //First 20 sec
+            {
+                bar.Busload = false;
+                for (int i = 0; i < 15; i++)
+                {
+                    bar.guest.Enqueue(new Patron(bar));
+                }
+            }
+            else
+            {
+                Thread.Sleep(bar.TimeToCheckID * 2);
             if (bar.mainWindow.token.IsCancellationRequested)
             {
                 return;
             }
             bar.guest.Enqueue(new Patron(bar));
             Thread.Sleep(bar.TimeToCheckID * 2);
-            //Enqueue 15
+            }
         }
     }
 }
