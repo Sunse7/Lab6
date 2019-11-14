@@ -10,8 +10,10 @@ namespace Lab6
 {
     class Bouncer
     {
+        Bar bar;
         public Bouncer(Bar bar)
         {
+            this.bar = bar;
             Task.Run(() => 
             {
                 while (bar.IsOpen)
@@ -26,6 +28,6 @@ namespace Lab6
                 }
                 bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
             });            
-        }    
+        }
     }
 }

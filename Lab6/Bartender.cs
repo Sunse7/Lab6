@@ -19,7 +19,6 @@ namespace Lab6
 
             Task.Run(() =>
             {
-
                 while ((bar.patronList.Count + bar.guest.Count) > 0 || bar.IsOpen)
                 {
                     bar.Log("Waiting for guest to arraive", MainWindow.LogBox.Bartender);
@@ -27,10 +26,7 @@ namespace Lab6
                     LookingForGuest();
                     WhenGuestOrders();
                 }
-                //GoHome();
-                //bar.Log("I'll go home now", MainWindow.LogBox.Bartender);
-               // bar.BartenderWorking = false;
-            }, bar.mainWindow.token);
+            });
         }
         private void LookingForGuest()
         {
@@ -39,7 +35,7 @@ namespace Lab6
                 Thread.Sleep(50);
                 if (bar.mainWindow.token.IsCancellationRequested)
                 {
-                    GoHome();
+                    BartenderGoHome();
                     break;
                 }
             }
@@ -64,11 +60,11 @@ namespace Lab6
                 WhenGuestOrders();
             }
         }
-        private void GoHome()
+        public void BartenderGoHome()
         {
             while ((bar.patronList.Count + bar.guest.Count) > 0 || bar.WaitressIsPresent) { }
+            bar.CloseBar();
             bar.Log("I'll go home now", MainWindow.LogBox.Bartender);
-            bar.BartenderWorking = false;
         }
     }
 }

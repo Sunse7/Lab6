@@ -45,14 +45,12 @@ namespace Lab6
         {
             bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
             Thread.Sleep(bar.TimeToWalkToBar);
-            bar.Log($"{Name} arrives at the bar", MainWindow.LogBox.Patron);            
-            bar.WaitingPatrons++;
+            bar.Log($"{Name} arrives at the bar", MainWindow.LogBox.Patron);
         }        
         public void LookForEmptyChair()
         {
             if (bar.GotBeer == true)
             {
-                    bar.WaitingPatrons--;
                 if (bar.chair.Count > 0)
                 {
                     bar.GotBeer = false;
