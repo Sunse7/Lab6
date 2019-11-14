@@ -24,6 +24,8 @@ namespace Lab6
         public bool IsOpen { get; set; } = true;
         public bool WaitressIsPresent = true;
         public bool GotBeer { get; set; } = false;
+        public bool CouplesNight = false;
+        public bool Busload = false;
         public static int min = 3000;
         public static int max = 10001;
         public int TimeToCheckID = random.Next(min, max);
@@ -34,7 +36,7 @@ namespace Lab6
         public int TimeToPourBeer = 3000;
         public int TimeToPickGlasses = 10000;
         public int TimeToDoDishes = 15000;
-        public int BarIsOpenTime = 20;
+        public int BarIsOpenTime = 120;
 
         public Bar(MainWindow mainWindow)
         {

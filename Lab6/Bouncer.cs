@@ -29,5 +29,13 @@ namespace Lab6
                 bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
             });            
         }
+        private void CouplesNightTime()
+        {
+
+        }
+        private void BusloadTime()
+        {
+
+        }
     }
 }
