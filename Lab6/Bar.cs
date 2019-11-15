@@ -11,8 +11,8 @@ namespace Lab6
 {
     class Bar
     {
-        private static int MaxNumOfGlasses = 8;
-        private static int MaxNumOfChairs = 9;
+        public int MaxNumOfGlasses = 8;
+        public int MaxNumOfChairs = 9;
         public static Random random = new Random();
         public MainWindow mainWindow;
         public ConcurrentStack<BeerGlass> shelf;
@@ -24,7 +24,7 @@ namespace Lab6
         public bool IsOpen { get; set; } = true;
         public bool WaitressIsPresent = true;
         public bool GotBeer { get; set; } = false;
-        public bool CouplesNight = false;
+        public bool CouplesNight = true;
         public bool Busload = false;
         public static int min = 3000;
         public static int max = 10001;

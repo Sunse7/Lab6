@@ -42,14 +42,17 @@ namespace Lab6
         }
         private void CouplesNightTime()
         {
-            Thread.Sleep(bar.TimeToCheckID / 2);
-            if (bar.mainWindow.token.IsCancellationRequested)
-            {
-                return;
-            }
-            bar.guest.Enqueue(new Patron(bar));
-            bar.guest.Enqueue(new Patron(bar));
-            Thread.Sleep(bar.TimeToCheckID / 2);
+            
+            
+                Thread.Sleep(bar.TimeToCheckID / 2);
+                if (bar.mainWindow.token.IsCancellationRequested)
+                {
+                    return;
+                }
+                bar.guest.Enqueue(new Patron(bar));
+                bar.guest.Enqueue(new Patron(bar));
+                Thread.Sleep(bar.TimeToCheckID / 2);
+            
         }
         private void BusloadTime()
         {

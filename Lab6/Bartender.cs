@@ -26,6 +26,7 @@ namespace Lab6
                     LookingForGuest();
                     WhenGuestOrders();
                 }
+                BartenderGoHome();
             });
         }
         private void LookingForGuest()
@@ -39,8 +40,9 @@ namespace Lab6
                     break;
                 }
             }
-            if (bar.guest.TryDequeue(out patron))
+            if (bar.guest.TryDequeue(out Patron dequeuedPatron))
             {
+                this.patron = dequeuedPatron;
                 Thread.Sleep(bar.TimeToGetGlass);                
                 bar.Log("Walking to shelf", MainWindow.LogBox.Bartender);
             }         
@@ -49,10 +51,10 @@ namespace Lab6
         {
             if(bar.shelf.Count != 0 && this.patron != null)
             {
-                bar.shelf.TryPop(out this.glass);
+                bar.shelf.TryPop(out glass);
                 Thread.Sleep(bar.TimeToPourBeer);
                 bar.Log("Gives beer to guest", MainWindow.LogBox.Bartender);
-                bar.GotBeer = true;                
+                bar.GotBeer = true;
             }
             else
             {

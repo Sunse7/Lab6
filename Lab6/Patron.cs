@@ -77,8 +77,22 @@ namespace Lab6
         }
         private void ExitBar()
         {
-            bar.table.Push(this.glass);
-            bar.chair.Push(this.chair);
+            if(bar.table.Count == bar.MaxNumOfGlasses)
+            {
+                return;
+            }
+            else
+            {
+                bar.table.Push(this.glass);
+            }
+            if(bar.chair.Count == bar.MaxNumOfChairs)
+            {
+                return;
+            }
+            else
+            {
+                bar.chair.Push(this.chair);
+            }
             bar.patronList.Remove(this);         
             bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);            
         }
