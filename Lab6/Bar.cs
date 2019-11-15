@@ -26,7 +26,6 @@ namespace Lab6
         public bool GotBeer { get; set; } = false;
         public bool CouplesNight = false;
         public bool Busload = false;
-        public int TimeUntilBarCloses = 120; //Needs to be connected to the CountDown
         public static int min = 3000;
         public static int max = 10001;
         public int TimeToCheckID = random.Next(min, max);

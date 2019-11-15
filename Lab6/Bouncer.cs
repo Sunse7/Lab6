@@ -53,7 +53,8 @@ namespace Lab6
         }
         private void BusloadTime()
         {
-            if (bar.TimeUntilBarCloses <= 100) //First 20 sec
+            
+            if (bar.BarIsOpenTime <= 100)
             {
                 bar.Busload = false;
                 for (int i = 0; i < 15; i++)
@@ -63,13 +64,18 @@ namespace Lab6
             }
             else
             {
-                Thread.Sleep(bar.TimeToCheckID * 2);
-            if (bar.mainWindow.token.IsCancellationRequested)
-            {
-                return;
-            }
-            bar.guest.Enqueue(new Patron(bar));
-            Thread.Sleep(bar.TimeToCheckID * 2);
+                while (bar.IsOpen)
+                {
+                    // Sleeping twice to ease cancellation.
+                    // Thereby normal sleeps, insead of ((Sleep/2)*2)
+                    Thread.Sleep(bar.TimeToCheckID);
+                    if (bar.mainWindow.token.IsCancellationRequested)
+                    {
+                        return;
+                    }
+                    bar.guest.Enqueue(new Patron(bar));
+                    Thread.Sleep(bar.TimeToCheckID);
+                }                
             }
         }
     }
