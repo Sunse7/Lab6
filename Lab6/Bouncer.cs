@@ -38,10 +38,8 @@ namespace Lab6
                             sleepTime = bar.TimeToCheckID / 2;
                         }
                         Thread.Sleep(sleepTime);
-                        if (bar.mainWindow.token.IsCancellationRequested)
-                        {
-                            return;
-                        }
+                        if (bar.mainWindow.token.IsCancellationRequested) {return;}
+                        
                         bar.guest.Enqueue(new Patron(bar));
                         Thread.Sleep(sleepTime);
                     }                    
@@ -52,24 +50,22 @@ namespace Lab6
         private void CouplesNightTime()
         {                  
             Thread.Sleep(bar.TimeToCheckID / 2);
-            if (bar.mainWindow.token.IsCancellationRequested)
-            {
-                return;
-            }
+            if (bar.mainWindow.token.IsCancellationRequested) {return;}
+            
             bar.guest.Enqueue(new Patron(bar));
             bar.guest.Enqueue(new Patron(bar));
             Thread.Sleep(bar.TimeToCheckID / 2);            
         }
         private void BusloadTime()
         {
-            while (busloadIncomplete)
+            while (bar.BusloadIncomplete)
             {
                 if (bar.BarIsOpenTime < 100)
                 {
+                    bar.BusloadIncomplete = false;
                     for (int i = 0; i < 15; i++)
                     {
                         bar.guest.Enqueue(new Patron(bar));
-                        busloadIncomplete = false;
                     }
                 }
             }

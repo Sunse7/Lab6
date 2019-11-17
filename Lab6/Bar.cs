@@ -20,13 +20,13 @@ namespace Lab6
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
         public Stack<BeerGlass> glasses;
-        public List<Patron> patronList; //Byt till en         public ConcurrentBag<Patron> patronBag;
-        
+        public List<Patron> patronList;
         public bool IsOpen { get; set; } = true;
         public bool WaitressIsPresent = true;
         public bool GotBeer { get; set; } = false;
         public bool CouplesNight = false;
-        public bool Busload = true;
+        public bool Busload = false;
+        public bool BusloadIncomplete = true;
         public static int min = 3000;
         public static int max = 10001;
         public int TimeToCheckID = random.Next(min, max);
@@ -71,7 +71,7 @@ namespace Lab6
                     Thread.Sleep(50);                    
                     mainWindow.Dispatcher.Invoke(() =>
                     {
-                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {patronList.Count}";                        
+                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {patronList.Count} Num of waiting guests: {guest.Count}";                        
                         mainWindow.numOfGlassesInShelfLable.Content = $"Number of glasses in shelf: {shelf.Count} (Max: {MaxNumOfGlasses})";
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
@@ -103,6 +103,7 @@ namespace Lab6
         }
         public void CloseBar()
         {
+            IsOpen = false;
             mainWindow.source.Cancel();           
         }
     }

@@ -47,10 +47,8 @@ namespace Lab6
            
             while (bar.glasses.Count > 0)
             {
-                if (bar.shelf.Count == bar.MaxNumOfGlasses)
-                {
-                    return;
-                }
+                if (bar.shelf.Count == bar.MaxNumOfGlasses) { return; }
+               
                 bar.shelf.Push(bar.glasses.Pop());
             }
             bar.Log("Putting it back in the shelf", MainWindow.LogBox.Waitress);

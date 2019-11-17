@@ -40,12 +40,18 @@ namespace Lab6
                     break;
                 }
             }
+           /* if (bar.guest.TryPeek(out Patron currentPatron))
+            {
+                this.patron = currentPatron;
+                Thread.Sleep(bar.TimeToGetGlass);
+                bar.Log("Taking a glass".ma)
+            }*/
             if (bar.guest.TryDequeue(out Patron dequeuedPatron))
             {
                 this.patron = dequeuedPatron;
                 Thread.Sleep(bar.TimeToGetGlass);                
                 bar.Log("Walking to shelf", MainWindow.LogBox.Bartender);
-            }         
+            }        
         }
         public void WhenGuestOrders()
         {

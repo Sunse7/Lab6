@@ -77,26 +77,17 @@ namespace Lab6
         }
         private void ExitBar()
         {
-            if(bar.table.Count == bar.MaxNumOfGlasses)
-            {
-                return;
-            }
-            else
-            {
-                bar.table.Push(this.glass);
-            }
-            if(bar.chair.Count == bar.MaxNumOfChairs)
-            {
-                return;
-            }
-            else
-            {
-                bar.chair.Push(this.chair);
-            }
-            lock (bar.patronList)
+            if (bar.table.Count == bar.MaxNumOfGlasses) { return; }            
+            else { bar.table.Push(this.glass); }
+
+            if (bar.chair.Count == bar.MaxNumOfChairs) { return; }           
+            else { bar.chair.Push(this.chair); }
+            
+            /*lock (bar.patronList)
             {
                 bar.patronList.Remove(this);
-            }
+            }*/
+            bar.patronList.Remove(this);
             bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);            
         }
     }
