@@ -11,18 +11,25 @@ namespace Lab6
 {
     class Bar
     {
-        private static int MaxNumOfGlasses = 8;
-        private static int MaxNumOfChairs = 9;
+        public int MaxNumOfGlasses = 8;
+        public int MaxNumOfChairs = 9;
         public static Random random = new Random();
         public MainWindow mainWindow;
         public ConcurrentStack<BeerGlass> shelf;
         public ConcurrentStack<BeerGlass> table;
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
+        public Stack<BeerGlass> glasses;
         public List<Patron> patronList;
-        public bool IsOpen = true;
+        public bool IsOpen { get; set; } = true;
+        public bool WaitressIsPresent = true;
         public bool GotBeer { get; set; } = false;
-        public int TimeToCheckID = random.Next(3000, 10001);
+        public bool CouplesNight = false;
+        public bool Busload = false;
+        public bool BusloadIncomplete = true;
+        public static int min = 3000;
+        public static int max = 10001;
+        public int TimeToCheckID = random.Next(min, max);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
         public int TimeToWalkToBar = 1000;
         public int TimeToFindChair = 4000;
@@ -39,6 +46,7 @@ namespace Lab6
             table = new ConcurrentStack<BeerGlass>();
             chair = new ConcurrentStack<Chair>();
             guest = new ConcurrentQueue<Patron>();
+            glasses = new Stack<BeerGlass>();
             patronList = new List<Patron>();
             var bouncer = new Bouncer(this);
             var waitress = new Waitress(this);
@@ -52,7 +60,7 @@ namespace Lab6
             {
                 chair.Push(new Chair());
             }
-
+            
             BarInfo();
         }
         public void BarInfo()
@@ -63,7 +71,7 @@ namespace Lab6
                     Thread.Sleep(50);                    
                     mainWindow.Dispatcher.Invoke(() =>
                     {
-                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {patronList.Count}";                        
+                        mainWindow.numOfGuestInBarLable.Content = $"Number of guests in bar: {patronList.Count} Num of waiting guests: {guest.Count}";                        
                         mainWindow.numOfGlassesInShelfLable.Content = $"Number of glasses in shelf: {shelf.Count} (Max: {MaxNumOfGlasses})";
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
@@ -76,18 +84,27 @@ namespace Lab6
             mainWindow.LogEvent($"{timeStamp} {text}", listbox);
         }
         public void Countdown(int count, TimeSpan interval, Action<int> ts)
-        {
-            var dt = new DispatcherTimer();
+        {            
+            var dt = new DispatcherTimer();            
             dt.Interval = interval;
             dt.Tick += (_, a) =>
-            {
+            {                
                 if (count-- == 0)
+                {
                     dt.Stop();
+                    IsOpen = false;
+                    CloseBar();
+                }
                 else
                     ts(count);
             };
             ts(count);
             dt.Start();
+        }
+        public void CloseBar()
+        {
+            IsOpen = false;
+            mainWindow.source.Cancel();           
         }
     }
 }
