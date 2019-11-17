@@ -18,68 +18,76 @@ namespace Lab6
             {
                 while (bar.IsOpen)
                 {
+                    if (bar.Busload)
+                    {
+                        BusloadTime();
+                    }
                     if (bar.CouplesNight)
                     {
                         CouplesNightTime();
                     }
-                    else if (bar.Busload)
-                    {
-                        BusloadTime();
-                    }
                     else
                     {
-                        Thread.Sleep(bar.TimeToCheckID / 2);
+                        int sleepTime;
+                        if (bar.Busload)
+                        {
+                            sleepTime = bar.TimeToCheckID;
+                        }
+                        else
+                        {
+                            sleepTime = bar.TimeToCheckID / 2;
+                        }
+                        Thread.Sleep(sleepTime);
                         if (bar.mainWindow.token.IsCancellationRequested)
                         {
                             return;
                         }
                         bar.guest.Enqueue(new Patron(bar));
-                        Thread.Sleep(bar.TimeToCheckID / 2);
+                        Thread.Sleep(sleepTime);
                     }                    
                 }
                 bar.Log("Bouncer goes home", MainWindow.LogBox.Patron);
             });            
         }
         private void CouplesNightTime()
-        {
-            
-            
-                Thread.Sleep(bar.TimeToCheckID / 2);
-                if (bar.mainWindow.token.IsCancellationRequested)
-                {
-                    return;
-                }
-                bar.guest.Enqueue(new Patron(bar));
-                bar.guest.Enqueue(new Patron(bar));
-                Thread.Sleep(bar.TimeToCheckID / 2);
-            
+        {                  
+            Thread.Sleep(bar.TimeToCheckID / 2);
+            if (bar.mainWindow.token.IsCancellationRequested)
+            {
+                return;
+            }
+            bar.guest.Enqueue(new Patron(bar));
+            bar.guest.Enqueue(new Patron(bar));
+            Thread.Sleep(bar.TimeToCheckID / 2);            
         }
         private void BusloadTime()
         {
-            
-            if (bar.BarIsOpenTime <= 100)
+            while (busloadIncomplete)
             {
-                bar.Busload = false;
-                for (int i = 0; i < 15; i++)
+                if (bar.BarIsOpenTime < 100)
                 {
-                    bar.guest.Enqueue(new Patron(bar));
+                    for (int i = 0; i < 15; i++)
+                    {
+                        bar.guest.Enqueue(new Patron(bar));
+                        busloadIncomplete = false;
+                    }
                 }
             }
-            else
-            {
-                while (bar.IsOpen)
-                {
-                    // Sleeping twice to ease cancellation.
-                    // Thereby normal sleeps, insead of ((Sleep/2)*2)
-                    Thread.Sleep(bar.TimeToCheckID);
-                    if (bar.mainWindow.token.IsCancellationRequested)
-                    {
-                        return;
-                    }
-                    bar.guest.Enqueue(new Patron(bar));
-                    Thread.Sleep(bar.TimeToCheckID);
-                }                
-            }
+            //else
+            //{
+            //    while (bar.IsOpen)
+            //    {
+            //        // Sleeping twice to ease cancellation.
+            //        // Thereby normal sleeps, insead of ((Sleep/2)*2)
+            //        Thread.Sleep(bar.TimeToCheckID);
+            //        if (bar.mainWindow.token.IsCancellationRequested)
+            //        {
+            //            return;
+            //        }
+            //        bar.guest.Enqueue(new Patron(bar));
+            //        Thread.Sleep(bar.TimeToCheckID);
+            //    }                
+            //}
         }
     }
 }

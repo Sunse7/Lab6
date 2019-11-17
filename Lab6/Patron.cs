@@ -93,7 +93,10 @@ namespace Lab6
             {
                 bar.chair.Push(this.chair);
             }
-            bar.patronList.Remove(this);         
+            lock (bar.patronList)
+            {
+                bar.patronList.Remove(this);
+            }
             bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);            
         }
     }

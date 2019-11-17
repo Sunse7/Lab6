@@ -20,12 +20,13 @@ namespace Lab6
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
         public Stack<BeerGlass> glasses;
-        public List<Patron> patronList;
+        public List<Patron> patronList; //Byt till en         public ConcurrentBag<Patron> patronBag;
+        
         public bool IsOpen { get; set; } = true;
         public bool WaitressIsPresent = true;
         public bool GotBeer { get; set; } = false;
-        public bool CouplesNight = true;
-        public bool Busload = false;
+        public bool CouplesNight = false;
+        public bool Busload = true;
         public static int min = 3000;
         public static int max = 10001;
         public int TimeToCheckID = random.Next(min, max);
