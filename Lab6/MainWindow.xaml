@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Lab6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Puzzle" Height="450" Width="800">
     <Grid>
-        
+        <Label Content="Bartender" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top" Width="67"/>
+        <Label Content="Waitress" HorizontalAlignment="Left" Margin="10,145,0,0" VerticalAlignment="Top" Width="71"/>
+        <Label Content="Guests" HorizontalAlignment="Left" Margin="10,265,0,0" VerticalAlignment="Top" Width="53" RenderTransformOrigin="0.025,0.669"/>
+        <ListBox x:Name="bartenderListBox" HorizontalAlignment="Left" Height="100" Margin="101,26,0,0" VerticalAlignment="Top" Width="319"/>
+        <ListBox x:Name="waitressListBox" HorizontalAlignment="Left" Height="100" Margin="101,145,0,0" VerticalAlignment="Top" Width="319"/>
+        <ListBox x:Name="patronListBox" HorizontalAlignment="Left" Height="133" Margin="101,265,0,0" VerticalAlignment="Top" Width="319"/>
+        <Label Content="The bar closes in:" HorizontalAlignment="Left" Margin="448,26,0,0" VerticalAlignment="Top" Width="102"/>
+        <Label x:Name="countDownLabel" Content="Time" HorizontalAlignment="Left" Margin="555,26,0,0" VerticalAlignment="Top" Width="68"/>
+        <Label x:Name="numOfGuestInBarLable" Content="Info" HorizontalAlignment="Left" Margin="472,84,0,0" VerticalAlignment="Top" Height="42" Width="311"/>
+        <Label x:Name="numOfGlassesInShelfLable" Content="Info" HorizontalAlignment="Left" Margin="472,153,0,0" VerticalAlignment="Top" Width="311" Height="42"/>
+        <Label x:Name="numOfEmptyChairsLable" Content="Info" HorizontalAlignment="Left" Margin="472,227,0,0" VerticalAlignment="Top" Height="42" Width="311"/>
+        <Button x:Name="closeBarButton" Content="Close bar" HorizontalAlignment="Left" Margin="642,350,0,0" VerticalAlignment="Top" Width="90" Height="25" Click="OnCloseBarButtonClick"/>
+        <Button x:Name="openBarButton" Content="Open bar" HorizontalAlignment="Left" Margin="511,350,0,0" VerticalAlignment="Top" Width="90" Height="25" Click="OnOpenBarButtonClick"/>
+
     </Grid>
 </Window>
