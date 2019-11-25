@@ -21,31 +21,33 @@ namespace Lab6
         
         public Patron(Bar bar)
         {
-            this.bar = bar;
-            
+            this.bar = bar;            
             bar.patronList.Add(this);
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
-            Name = names[randomName];           
-
+            Name = names[randomName];
+            Run();            
+        }
+        private void Run()
+        {
             Task.Run(() =>
             {
-                while (bar.IsOpen) //? Bar closes when button click CloseBar or time hits 0
+                while (bar.IsOpen)
                 {
-                    EnterBar().Wait();
-                    LookForEmptyChair().Wait();
-                    DrinkBeer().Wait();
-                    ExitBar();           
+                    EnterBar();
+                    LookForEmptyChair();
+                    DrinkBeer();
+                    ExitBar();
                 }
             });
         }
-        private async Task EnterBar()
+        private void EnterBar()
         {
             bar.Log($"{Name} enters the bar", MainWindow.LogBox.Patron);
             Thread.Sleep(bar.TimeToWalkToBar);
-            bar.Log($"{Name} walks to the bar", MainWindow.LogBox.Patron);            
+            bar.Log($"{Name} arrives at the bar", MainWindow.LogBox.Patron);
         }        
-        public async Task LookForEmptyChair()
+        public void LookForEmptyChair()
         {
             if (bar.GotBeer == true)
             {
@@ -54,7 +56,7 @@ namespace Lab6
                     bar.GotBeer = false;
                     bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
                     Thread.Sleep(bar.TimeToFindChair);
-                    bar.chair.TryPop(out this.chair);
+                    bar.chair.TryPop(out chair);
                 }
                 else
                 {
@@ -68,17 +70,25 @@ namespace Lab6
                 LookForEmptyChair();
             }            
         }
-        private async Task DrinkBeer()
+        private void DrinkBeer()
         {
             bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
             Thread.Sleep(bar.TimeToDrinkBeer);            
         }
-        private async Task ExitBar()
+        private void ExitBar()
         {
-            bar.table.Push(this.glass);
-            bar.chair.Push(this.chair);
-            bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);
-            bar.patronList.Remove(this);            
+            if (bar.table.Count == bar.MaxNumOfGlasses) { return; }            
+            else { bar.table.Push(this.glass); }
+
+            if (bar.chair.Count == bar.MaxNumOfChairs) { return; }           
+            else { bar.chair.Push(this.chair); }
+            
+            /*lock (bar.patronList)
+            {
+                bar.patronList.Remove(this);
+            }*/
+            bar.patronList.Remove(this);
+            bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);            
         }
     }
 }
