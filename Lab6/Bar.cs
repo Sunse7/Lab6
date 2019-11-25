@@ -65,7 +65,8 @@ namespace Lab6
         }
         public void BarInfo()
         {
-            Task.Run(() => {
+            Task.Run(() => 
+            {
                 while (true)
                 {
                     Thread.Sleep(50);                    
@@ -76,7 +77,7 @@ namespace Lab6
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
                 }
-            }); 
+            }, mainWindow.token); 
         }
         public void Log(string text, MainWindow.LogBox listbox)
         {

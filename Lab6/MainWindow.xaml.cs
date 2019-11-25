@@ -53,27 +53,6 @@ namespace Lab6
             switch (TestCase.SelectedValue.ToString().Substring(38))
             {
                 case "Default":
-                    bar.MaxNumOfChairs = 9;
-                    bar.MaxNumOfGlasses = 8;
-                    break;
-                case "20 Glasses, 3 chairs":
-                    bar.MaxNumOfGlasses = 20;
-                    bar.MaxNumOfChairs = 3;
-                    break;
-                case "20 Chairs, 5 Glasses":
-                    bar.MaxNumOfChairs = 20;
-                    bar.MaxNumOfGlasses = 5;
-                    break;
-                case "Double Stay (Patrons)":
-                    bar.TimeToCheckID = Bar.random.Next(3000, 10001);
-                    bar.TimeToDrinkBeer = Bar.random.Next(20000, 30001);
-                    break;
-                case "Double Speed (Waitress)":
-                    bar.TimeToPickGlasses = 5000;
-                    bar.TimeToDoDishes = 7500;
-                    break;
-                case "5 Minutes Opentime":
-                    bar.BarIsOpenTime = 300;
                     break;
                 case "Couples night":
                     bar.CouplesNight = true;

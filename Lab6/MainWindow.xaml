@@ -22,11 +22,6 @@
         <Button x:Name="openBarButton" Content="Open bar" HorizontalAlignment="Left" Margin="472,350,0,0" VerticalAlignment="Top" Width="90" Height="25" Click="OnOpenBarButtonClick"/>
         <ComboBox Name="TestCase" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="472,269,0,0">
             <ComboBoxItem IsSelected="True">Default</ComboBoxItem>
-            <ComboBoxItem>20 Glasses, 3 chairs</ComboBoxItem>
-            <ComboBoxItem>20 Chairs, 5 Glasses</ComboBoxItem>
-            <ComboBoxItem>Double Stay (Patrons)</ComboBoxItem>
-            <ComboBoxItem>Double Speed Waitress</ComboBoxItem>
-            <ComboBoxItem>5 Minutes open</ComboBoxItem>
             <ComboBoxItem>Couples night</ComboBoxItem>
             <ComboBoxItem>BusLoad</ComboBoxItem>
         </ComboBox>
