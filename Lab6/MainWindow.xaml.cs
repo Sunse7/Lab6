@@ -49,12 +49,29 @@ namespace Lab6
         private void OnOpenBarButtonClick(object sender, RoutedEventArgs e)
         {
             bar = new Bar(this);
-            bar.Countdown(bar.BarIsOpenTime, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());            
+            bar.Countdown(bar.BarIsOpenTime, TimeSpan.FromSeconds(1), cur => countDownLabel.Content = cur.ToString());
+            switch (TestCase.SelectedValue.ToString().Substring(38))
+            {
+                case "Default":
+                    break;
+                case "Couples night":
+                    bar.CouplesNight = true;
+                    break;
+                case "Busload":
+                    bar.Busload = true;
+                    break;
+                default:
+                    break;
+            }
         }
         private void OnCloseBarButtonClick(object sender, RoutedEventArgs e)
         {
             bar.IsOpen = false;
             source.Cancel();
-        }         
+        }
+
+
+
+        
     }
 }

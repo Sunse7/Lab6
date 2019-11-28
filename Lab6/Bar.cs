@@ -27,9 +27,7 @@ namespace Lab6
         public bool CouplesNight = false;
         public bool Busload = false;
         public bool BusloadIncomplete = true;
-        public static int min = 3000;
-        public static int max = 10001;
-        public int TimeToCheckID = random.Next(min, max);
+        public int TimeToCheckID = random.Next(3000, 10001);
         public int TimeToDrinkBeer = random.Next(20000, 30001);
         public int TimeToWalkToBar = 1000;
         public int TimeToFindChair = 4000;
@@ -38,6 +36,7 @@ namespace Lab6
         public int TimeToPickGlasses = 10000;
         public int TimeToDoDishes = 15000;
         public int BarIsOpenTime = 120;
+        
 
         public Bar(MainWindow mainWindow)
         {
@@ -52,6 +51,7 @@ namespace Lab6
             var waitress = new Waitress(this);
             var bartender = new Bartender(this);
             
+
             for (int i = 0; i < MaxNumOfGlasses; i++)
             {
                 shelf.Push(new BeerGlass());
@@ -65,7 +65,8 @@ namespace Lab6
         }
         public void BarInfo()
         {
-            Task.Run(() => {
+            Task.Run(() => 
+            {
                 while (true)
                 {
                     Thread.Sleep(50);                    
@@ -76,7 +77,7 @@ namespace Lab6
                         mainWindow.numOfEmptyChairsLable.Content = $"Number of empty chairs: {chair.Count} (Max: {MaxNumOfChairs})";
                     });
                 }
-            }); 
+            }, mainWindow.token); 
         }
         public void Log(string text, MainWindow.LogBox listbox)
         {
@@ -95,6 +96,10 @@ namespace Lab6
                     IsOpen = false;
                     CloseBar();
                 }
+                else if (IsOpen == false)
+                {
+                    dt.Stop();
+                }
                 else
                     ts(count);
             };
@@ -104,7 +109,7 @@ namespace Lab6
         public void CloseBar()
         {
             IsOpen = false;
-            mainWindow.source.Cancel();           
+            mainWindow.source.Cancel();
         }
     }
 }
