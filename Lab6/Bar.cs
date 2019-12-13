@@ -11,6 +11,7 @@ namespace Lab6
 {
     class Bar
     {
+        public readonly object myListLock = new object();
         public int MaxNumOfGlasses = 8;
         public int MaxNumOfChairs = 9;
         public static Random random = new Random();
@@ -19,7 +20,7 @@ namespace Lab6
         public ConcurrentStack<BeerGlass> table;
         public ConcurrentStack<Chair> chair;
         public ConcurrentQueue<Patron> guest;
-        public Stack<BeerGlass> glasses;
+        public ConcurrentStack<BeerGlass> glasses;
         public List<Patron> patronList;
         public bool IsOpen { get; set; } = true;
         public bool WaitressIsPresent = true;
@@ -45,7 +46,7 @@ namespace Lab6
             table = new ConcurrentStack<BeerGlass>();
             chair = new ConcurrentStack<Chair>();
             guest = new ConcurrentQueue<Patron>();
-            glasses = new Stack<BeerGlass>();
+            glasses = new ConcurrentStack<BeerGlass>();
             patronList = new List<Patron>();
             var bouncer = new Bouncer(this);
             var waitress = new Waitress(this);

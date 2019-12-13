@@ -48,8 +48,11 @@ namespace Lab6
             while (bar.glasses.Count > 0)
             {
                 if (bar.shelf.Count == bar.MaxNumOfGlasses) { return; }
-               
-                bar.shelf.Push(bar.glasses.Pop());
+                if (bar.glasses.TryPop(out BeerGlass glass))
+                {
+                    bar.shelf.Push(glass);
+                }
+                
             }
             bar.Log("Putting it back in the shelf", MainWindow.LogBox.Waitress);
         }

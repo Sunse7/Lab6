@@ -21,8 +21,9 @@ namespace Lab6
         
         public Patron(Bar bar)
         {
-            this.bar = bar;            
-            bar.patronList.Add(this);
+            this.bar = bar;
+            lock (bar.myListLock) { bar.patronList.Add(this); }
+            
             names.AddRange(patronNames);
             int randomName = Bar.random.Next(0, names.Count);
             Name = names[randomName];
@@ -32,13 +33,16 @@ namespace Lab6
         {
             Task.Run(() =>
             {
-                while (bar.IsOpen)
-                {
+                //while (bar.IsOpen)
+                //{
                     EnterBar();
                     LookForEmptyChair();
                     DrinkBeer();
-                    ExitBar();
-                }
+                    while (ExitBar() == false)
+                    {
+                        Thread.Sleep(50);
+                    }
+                //}
             });
         }
         private void EnterBar()
@@ -49,25 +53,19 @@ namespace Lab6
         }        
         public void LookForEmptyChair()
         {
-            if (bar.GotBeer == true)
-            {
-                if (bar.chair.Count > 0)
-                {
-                    bar.GotBeer = false;
-                    bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
-                    Thread.Sleep(bar.TimeToFindChair);
-                    bar.chair.TryPop(out chair);
-                }
-                else
-                {
-                    Thread.Sleep(50);
-                    LookForEmptyChair();
-                }
-            }            
-            else
+            while(bar.GotBeer == false)
             {
                 Thread.Sleep(50);
-                LookForEmptyChair();
+            }
+            if (bar.GotBeer == true)
+            {
+                bar.GotBeer = false;
+                bar.Log($"{Name} looks for an empty chair", MainWindow.LogBox.Patron);
+                Thread.Sleep(bar.TimeToFindChair);
+                while (bar.chair.TryPop(out chair) == false)
+                {
+                    Thread.Sleep(50);
+                }
             }            
         }
         private void DrinkBeer()
@@ -75,20 +73,23 @@ namespace Lab6
             bar.Log($"{Name} sits down and drinks their beer", MainWindow.LogBox.Patron);
             Thread.Sleep(bar.TimeToDrinkBeer);            
         }
-        private void ExitBar()
+        private bool ExitBar()
         {
-            if (bar.table.Count == bar.MaxNumOfGlasses) { return; }            
+            if (bar.table.Count == bar.MaxNumOfGlasses) { return false; }            
             else { bar.table.Push(this.glass); }
 
-            if (bar.chair.Count == bar.MaxNumOfChairs) { return; }           
+            if (bar.chair.Count == bar.MaxNumOfChairs) { return false; }           
             else { bar.chair.Push(this.chair); }
-            
-            /*lock (bar.patronList)
+
+            Thread.Sleep(new Random().Next(1,5)); //silvertejp
+            lock (bar.myListLock)
             {
                 bar.patronList.Remove(this);
-            }*/
-            bar.patronList.Remove(this);
-            bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);            
+            }
+
+            //bar.patronList.Remove(this);
+            bar.Log($"{Name} leaves bar", MainWindow.LogBox.Patron);
+            return true;
         }
     }
 }
